@@ -12,7 +12,7 @@
 #         "model": {"Conversation_no": <number>, "Turn_no": <number>},
 #         "original": {"Conversation_no": <number>, "Turn_no": 1},
 #         "transformer": {"Conversation_no": <number>, "Turn_no": 1},
-#         "human": {"Conversation_no": <number>, "Turn_no": 1},
+#         "human": {"Conversation_no": <number>, "Turn_no": 1}
 #       },
 #       "Truth_rewrite": "<rewrite-of-question>",
 #       "Truth_passages": [ "<id-of-a-relevant-passage>", ... ],
