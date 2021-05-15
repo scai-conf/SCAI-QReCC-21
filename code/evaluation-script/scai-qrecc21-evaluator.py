@@ -8,7 +8,7 @@
 #   Directory that contains the ground-truth.json:
 #   [
 #     {
-#       "Questions": {
+#       "Turns": {
 #         "model": {"Conversation_no": <number>, "Turn_no": <number>},
 #         "original": {"Conversation_no": <number>, "Turn_no": 1},
 #         "transformer": {"Conversation_no": <number>, "Turn_no": 1},
@@ -137,7 +137,7 @@ def get_turn_id(turn):
     return "%d_%d" % (turn["Conversation_no"], turn["Turn_no"])
 
 def get_ground_truth_turn_id(turn, question_type):
-    return get_turn_id(turn["Questions"][question_type])
+    return get_turn_id(turn["Turns"][question_type])
 
 # STEP 1: QUESTION REWRITING
 
