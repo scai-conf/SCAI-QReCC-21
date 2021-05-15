@@ -10,10 +10,10 @@
 #   - questions.json:
 #     [
 #       {
-#         "Context": [ "<question1>", "<answer-to-question1>", ... "<questionX-1>", "<answer-to-questionX-1>" ],
-#         "Question": "<questionX>",
 #         "Conversation_no": <number>,
 #         "Turn_no": X,
+#         "Context": [ "<question1>", "<answer-to-question1>", ... "<questionX-1>", "<answer-to-questionX-1>" ],
+#         "Question": "<questionX>"
 #       }, ...
 #     ]
 #
@@ -22,13 +22,13 @@
 #   - run.json:
 #     [
 #       {
-#         "Model-Rewrite": "<questionX>",
-#         "Model-Passages": { 
-#           "<id-of-a-relevant-passage>": <score>, ...
-#         },
-#         "Model-Answer": "<sentence-in-passages-with-highest-term-overlap-with-questionX>",
 #         "Conversation_no": <number>,
 #         "Turn_no": X,
+#         "Model_rewrite": "<questionX>",
+#         "Model_passages": { 
+#           "<id-of-a-relevant-passage>": <score>, ...
+#         },
+#         "Model_answer": "<sentence-in-passages-with-highest-term-overlap-with-questionX>"
 #       }, ...
 #     ]
 #
@@ -127,9 +127,9 @@ def run_for_turn(turn, searcher, num_passages):
     retrieved_passages.sort(reverse = True, key = lambda passage: passage["score"])
     question_answer = answer(turn, rewritten_question, retrieved_passages)
     return {
-        "Model-Rewrite": rewritten_question,
-        "Model-Passages": {passage["id"]: passage["score"] for passage in retrieved_passages},
-        "Model-Answer": question_answer,
+        "Model_rewrite": rewritten_question,
+        "Model_passages": {passage["id"]: passage["score"] for passage in retrieved_passages},
+        "Model_answer": question_answer,
         "Conversation_no": turn["Conversation_no"],
         "Turn_no": turn["Turn_no"]
     }
