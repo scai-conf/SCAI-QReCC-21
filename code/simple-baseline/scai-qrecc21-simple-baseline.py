@@ -126,13 +126,14 @@ def run_for_turn(turn, searcher, num_passages):
     retrieved_passages = retrieve(turn, rewritten_question, searcher, num_passages)
     retrieved_passages.sort(reverse = True, key = lambda passage: passage["score"])
     question_answer = answer(turn, rewritten_question, retrieved_passages)
-    return {
-        "Model_rewrite": rewritten_question,
+    result = {
+        "Model_rewrite": rewritten_question, # remove unless you actually perform rewriting
         "Model_passages": {passage["id"]: passage["score"] for passage in retrieved_passages},
         "Model_answer": question_answer,
         "Conversation_no": turn["Conversation_no"],
         "Turn_no": turn["Turn_no"]
     }
+    return result
 
 def run(turns, searcher, num_passages):
     return [run_for_turn(turn, searcher, num_passages) for turn in turns]

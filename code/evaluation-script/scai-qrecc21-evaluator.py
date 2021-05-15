@@ -40,6 +40,9 @@
 # --eval-missing-truth
 #   Also evaluate turns with missing ground truth (i.e., no relevant passages, no answer) like in the paper.
 #
+# --eval-turn-one-rewrites
+#   Also evaluate (trivial) question rewrites for first turns of a conversations like in the paper.
+#
 # --no-rewriting
 #   Do no evaluate query rewriting, even if Model_rewrite fields exist in the run files.
 #
@@ -69,13 +72,14 @@ question_types = ["model", "original", "transformer", "human"]
 def parse_options():
     options = {
         "eval-missing-truth": False,
+        "eval-turn-one-rewrites": False,
         "rewriting": True,
         "retrieval": True,
         "answering": True
     }
 
     try:
-        long_options = ["input-dataset=", "input-run=", "output=", "eval-missing-truth", "no-rewriting", "no-retrieval", "no-answering"]
+        long_options = ["input-dataset=", "input-run=", "output=", "eval-missing-truth", "eval-turn-one-rewrites", "no-rewriting", "no-retrieval", "no-answering"]
         opts, _ = getopt.getopt(sys.argv[1:], "", long_options)
     except getopt.GetoptError as err:
         print(str(err))
@@ -99,6 +103,9 @@ def parse_options():
 
         if opt == "--eval-missing-truth":
             options["eval-missing-truth"] = True
+
+        if opt == "--eval-turn-one-rewrites":
+            options["eval-turn-one-rewrites"] = True
 
         if opt == "--no-rewriting":
             options["rewriting"] = False
@@ -144,7 +151,7 @@ def get_rewriting_run(run):
                 rewriting_run[turn_id] = rewrite
     return rewriting_run
 
-def evaluate_rewriting(ground_truth, run, eval_missing_truth):
+def evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewrites):
     print("Evaluate: Query Rewriting")
 
     rewriting_run = get_rewriting_run(run)
@@ -153,13 +160,14 @@ def evaluate_rewriting(ground_truth, run, eval_missing_truth):
 
     metric = load_metric("rouge")
     for turn in tqdm(ground_truth):
-        if eval_missing_truth or turn["Truth_rewrite"] != "":
-            turn_id = get_ground_truth_turn_id(turn, "model")
-            reference = turn["Truth_rewrite"]
-            prediction = ""
-            if turn_id in rewriting_run:
-                prediction = rewriting_run[turn_id]
-            metric.add(prediction = prediction, reference = reference)
+        if eval_turn_one_rewrites or turn["Turn_no"] > 1:
+            if eval_missing_truth or turn["Truth_rewrite"] != "":
+                turn_id = get_ground_truth_turn_id(turn, "model")
+                reference = turn["Truth_rewrite"]
+                prediction = ""
+                if turn_id in rewriting_run:
+                    prediction = rewriting_run[turn_id]
+                metric.add(prediction = prediction, reference = reference)
 
     score = metric.compute()
     return { "qr-rouge1r": score['rouge1'].mid.recall }
@@ -257,11 +265,11 @@ def has_model_rewrites(run):
             return True
     return False
 
-def evaluate(ground_truth, run, eval_missing_truth = False, rewriting = True, retrieval = True, answering = True):
+def evaluate(ground_truth, run, eval_missing_truth = False, eval_turn_one_rewrites = False, rewriting = True, retrieval = True, answering = True):
     eval_model_rewrites = has_model_rewrites(run)
     results = {}
     if rewriting:
-        results.update(evaluate_rewriting(ground_truth, run, eval_missing_truth))
+        results.update(evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewrites))
     if retrieval:
         results.update(evaluate_retrieval(ground_truth, run, eval_missing_truth, eval_model_rewrites))
     if answering:
@@ -279,6 +287,7 @@ def main(options):
             ground_truth = options["ground-truth"],
             run = options["run"],
             eval_missing_truth = options["eval-missing-truth"],
+            eval_turn_one_rewrites = options["eval-turn-one-rewrites"],
             rewriting = options["rewriting"],
             retrieval = options["retrieval"],
             answering = options["answering"])
