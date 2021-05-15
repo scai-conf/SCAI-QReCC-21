@@ -156,6 +156,7 @@ def evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewr
 
     rewriting_run = get_rewriting_run(run)
     if not rewriting_run: # no rewrite => do not evaluate
+        print("  skipped for no rewrites")
         return {}
 
     metric = load_metric("rouge")
@@ -174,9 +175,9 @@ def evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewr
     if rewrites > 0:
         score = metric.compute()
         return { "qr-rouge1r": score['rouge1'].mid.recall }
-        print("    used %d rewrites" % rewrites)
+        print("  used %d rewrites" % rewrites)
     else:
-        print("    skipped for no rewrites")
+        print("  skipped for no rewrites")
         return { }
 
 # STEP 2: PASSAGE RETRIEVAL
