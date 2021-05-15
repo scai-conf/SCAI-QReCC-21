@@ -186,15 +186,18 @@ def get_retrieval_ground_truth(ground_truth, question_type, eval_missing_truth):
             retrieval_ground_truth[turn_id] = {"":1}
     return retrieval_ground_truth
 
-def evaluate_retrieval(ground_truth, run, eval_missing_truth):
+def evaluate_retrieval(ground_truth, run, eval_missing_truth, eval_model_rewrites):
     print("Evaluate: Passage Retrieval")
     result = {}
     retrieval_run = get_retrieval_run(run)
     for question_type in question_types:
+        if question_type == "model" and not eval_model_rewrites:
+            print("  model skipped for no Model_rewrite")
+            continue
         print("  " + question_type)
         retrieval_ground_truth_for_type = get_retrieval_ground_truth(ground_truth, question_type, eval_missing_truth)
         retrieval_run_for_type = {turn_id:passages for (turn_id, passages) in retrieval_run.items() if turn_id in retrieval_ground_truth_for_type}
-        if retrieval_run_for_type: # evaluate only if retrieval done
+        if retrieval_run_for_type: # at least one turn for this type => evaluate
             metric = pytrec_eval.RelevanceEvaluator(retrieval_ground_truth_for_type, {'recip_rank'})
             mrrs = [score["recip_rank"] for score in metric.evaluate(retrieval_run_for_type).values()]
             average_mrr = sum(mrrs) / len(mrrs)
@@ -213,11 +216,14 @@ def get_answering_run(run):
                 answering_run[turn_id] = answer
     return answering_run
 
-def evaluate_answering(ground_truth, run, eval_missing_truth):
+def evaluate_answering(ground_truth, run, eval_missing_truth, eval_model_rewrites):
     print("Evaluate: Question Answering")
     result = {}
     answering_run = get_answering_run(run)
     for question_type in question_types:
+        if question_type == "model" and not eval_model_rewrites:
+            print("  model skipped for no Model_rewrite")
+            continue
         print("  " + question_type)
         metric = load_metric("squad_v2")
         int answers = 0
@@ -245,14 +251,21 @@ def evaluate_answering(ground_truth, run, eval_missing_truth):
 
 # EVALUATE
 
+def has_model_rewrites(run):
+    for turn in run:
+        if "Model_rewrite" in turn:
+            return True
+    return False
+
 def evaluate(ground_truth, run, eval_missing_truth = False, rewriting = True, retrieval = True, answering = True):
+    eval_model_rewrites = has_model_rewrites(run)
     results = {}
     if rewriting:
         results.update(evaluate_rewriting(ground_truth, run, eval_missing_truth))
     if retrieval:
-        results.update(evaluate_retrieval(ground_truth, run, eval_missing_truth))
+        results.update(evaluate_retrieval(ground_truth, run, eval_missing_truth, eval_model_rewrites))
     if answering:
-        results.update(evaluate_answering(ground_truth, run, eval_missing_truth))
+        results.update(evaluate_answering(ground_truth, run, eval_missing_truth, eval_model_rewrites))
     return results
 
 # MAIN
