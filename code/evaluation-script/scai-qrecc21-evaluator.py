@@ -159,6 +159,7 @@ def evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewr
         return {}
 
     metric = load_metric("rouge")
+    rewrites = 0
     for turn in tqdm(ground_truth):
         if eval_turn_one_rewrites or turn["Turn_no"] > 1:
             if eval_missing_truth or turn["Truth_rewrite"] != "":
@@ -168,9 +169,15 @@ def evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewr
                 if turn_id in rewriting_run:
                     prediction = rewriting_run[turn_id]
                 metric.add(prediction = prediction, reference = reference)
+                rewrites = rewrites + 1
 
-    score = metric.compute()
-    return { "qr-rouge1r": score['rouge1'].mid.recall }
+    if rewrites > 0:
+        score = metric.compute()
+        return { "qr-rouge1r": score['rouge1'].mid.recall }
+        print("    used %d rewrites" % rewrites)
+    else:
+        print("    skipped for no rewrites")
+        return { }
 
 # STEP 2: PASSAGE RETRIEVAL
 
@@ -199,10 +206,10 @@ def evaluate_retrieval(ground_truth, run, eval_missing_truth, eval_model_rewrite
     result = {}
     retrieval_run = get_retrieval_run(run)
     for question_type in question_types:
-        if question_type == "model" and not eval_model_rewrites:
-            print("  model skipped for no Model_rewrite")
-            continue
         print("  " + question_type)
+        if question_type == "model" and not eval_model_rewrites:
+            print("    skipped for no Model_rewrite")
+            continue
         retrieval_ground_truth_for_type = get_retrieval_ground_truth(ground_truth, question_type, eval_missing_truth)
         retrieval_run_for_type = {turn_id:passages for (turn_id, passages) in retrieval_run.items() if turn_id in retrieval_ground_truth_for_type}
         if retrieval_run_for_type: # at least one turn for this type => evaluate
@@ -210,6 +217,9 @@ def evaluate_retrieval(ground_truth, run, eval_missing_truth, eval_model_rewrite
             mrrs = [score["recip_rank"] for score in metric.evaluate(retrieval_run_for_type).values()]
             average_mrr = sum(mrrs) / len(mrrs)
             result["pr-" + question_type + "-mrr"] = average_mrr
+            print("    used retrieved passages for %d questions" % len(retrieval_run_for_type))
+        else:
+            print("    skipped for no retrieved passages")
     return result
 
 # STEP 3: QUESTION ANSWERING
@@ -229,10 +239,10 @@ def evaluate_answering(ground_truth, run, eval_missing_truth, eval_model_rewrite
     result = {}
     answering_run = get_answering_run(run)
     for question_type in question_types:
-        if question_type == "model" and not eval_model_rewrites:
-            print("  model skipped for no Model_rewrite")
-            continue
         print("  " + question_type)
+        if question_type == "model" and not eval_model_rewrites:
+            print("    skipped for no Model_rewrite")
+            continue
         metric = load_metric("squad_v2")
         int answers = 0
         for turn in tqdm(ground_truth, desc = "  "):
@@ -255,6 +265,9 @@ def evaluate_answering(ground_truth, run, eval_missing_truth, eval_model_rewrite
             score = metric.compute()
             result["qa-" + question_type + "-em"] = score['exact']
             result["qa-" + question_type + "-f1"] = score['f1']
+            print("    used %d answers" % answers)
+        else:
+            print("    skipped for no answers")
     return result
 
 # EVALUATE
