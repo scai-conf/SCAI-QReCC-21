@@ -34,13 +34,14 @@
 #
 #
 
-import json
 from pyserini.search import SimpleSearcher
+from textblob import TextBlob
+from tqdm import tqdm
 import getopt
+import json
+import nltk
 import os
 import sys
-from textblob import TextBlob
-import nltk
 
 # OPTIONS
 
@@ -136,7 +137,7 @@ def run_for_turn(turn, searcher, num_passages):
     return result
 
 def run(turns, searcher, num_passages):
-    return [run_for_turn(turn, searcher, num_passages) for turn in turns]
+    return [run_for_turn(turn, searcher, num_passages) for turn in tqdm(turns)]
 
 # MAIN
 
