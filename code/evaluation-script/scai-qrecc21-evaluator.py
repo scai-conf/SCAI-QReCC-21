@@ -162,7 +162,7 @@ def evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewr
     metric = load_metric("rouge")
     rewrites = 0
     for turn in tqdm(ground_truth):
-        if eval_turn_one_rewrites or turn["Turn_no"] > 1:
+        if eval_turn_one_rewrites or turn["Turns"]["model"]["Turn_no"] > 1:
             if eval_missing_truth or turn["Truth_rewrite"] != "":
                 turn_id = get_ground_truth_turn_id(turn, "model")
                 reference = turn["Truth_rewrite"]
@@ -245,7 +245,7 @@ def evaluate_answering(ground_truth, run, eval_missing_truth, eval_model_rewrite
             print("    skipped for no Model_rewrite")
             continue
         metric = load_metric("squad_v2")
-        int answers = 0
+        answers = 0
         for turn in tqdm(ground_truth, desc = "  "):
             turn_id = get_ground_truth_turn_id(turn, question_type)
             if eval_missing_truth or turn["Truth_answer"] != "":
