@@ -145,6 +145,12 @@ def get_turn_id(turn):
 def get_ground_truth_turn_id(turn, question_type):
     return get_turn_id(turn["Turns"][question_type])
 
+def get_metric_name(base_name, question_type):
+    if question_type == "model":
+        return base_name
+    else:
+        return base_name + " " + question_type
+
 # STEP 1: QUESTION REWRITING
 
 def get_rewriting_run(run):
@@ -180,7 +186,7 @@ def evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewr
 
     if rewrites > 0:
         score = metric.compute()
-        return { "qr-rouge1r": score['rouge1'].mid.recall }
+        return { "ROUGE1-R": score['rouge1'].mid.recall }
         print("  used %d rewrites" % rewrites)
     else:
         print("  skipped for no rewrites")
@@ -220,7 +226,7 @@ def evaluate_retrieval(ground_truth, run, eval_missing_truth, question_types):
             metric = pytrec_eval.RelevanceEvaluator(retrieval_ground_truth_for_type, {'recip_rank'})
             mrrs = [score["recip_rank"] for score in metric.evaluate(retrieval_run_for_type).values()]
             average_mrr = sum(mrrs) / len(mrrs)
-            result["pr-" + question_type + "-mrr"] = average_mrr
+            result[get_metric_name("MRR", question_type)] = average_mrr
             print("    used retrieved passages for %d questions" % len(retrieval_run_for_type))
         else:
             print("    skipped for no retrieved passages")
@@ -264,8 +270,8 @@ def evaluate_answering(ground_truth, run, eval_missing_truth, question_types):
                 metric.add(prediction = prediction, reference = reference)
         if answers > 0:
             score = metric.compute()
-            result["qa-" + question_type + "-em"] = score['exact']
-            result["qa-" + question_type + "-f1"] = score['f1']
+            result[get_metric_name("Exact match", question_type)] = score['exact']
+            result[get_metric_name("F1", question_type)] = score['f1']
             print("    used %d answers" % answers)
         else:
             print("    skipped for no answers")
