@@ -76,6 +76,7 @@ question_types_model_only = ["model"]
 
 def parse_options():
     options = {
+        "eval-question-types": False,
         "eval-missing-truth": False,
         "eval-turn-one-rewrites": False,
         "rewriting": True,
