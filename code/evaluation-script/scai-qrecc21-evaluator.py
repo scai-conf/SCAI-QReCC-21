@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """Calculates the measures for the SCAI QReCC 21 challenge"""
-# Version: 2021-05-15
+# Version: 2021-05-17
 
 # Parameters:
 # --input-dataset=<directory>
@@ -37,6 +37,9 @@
 # --output=<directory>
 #   Directory to which the evaluation will be written. Will be created if it does not exist.
 #
+# --eval-question-types
+#   Also evaluate retrieval and answering for SCAI QReCC'21 standard question rewrites (no rewrite/original, transformer, human) instead of the ones done by the model
+#
 # --eval-missing-truth
 #   Also evaluate turns with missing ground truth (i.e., no relevant passages, no answer) like in the paper.
 #
@@ -67,7 +70,9 @@ import sys
 input_dataset_file_name = "ground-truth.json"
 input_run_file_name = "run.json"
 output_file_name = "evaluation.prototext"
-question_types = ["model", "original", "transformer", "human"]
+question_types_all = ["model", "original", "transformer", "human"]
+question_types_no_model = ["original", "transformer", "human"]
+question_types_model_only = ["model"]
 
 def parse_options():
     options = {
@@ -79,7 +84,7 @@ def parse_options():
     }
 
     try:
-        long_options = ["input-dataset=", "input-run=", "output=", "eval-missing-truth", "eval-turn-one-rewrites", "no-rewriting", "no-retrieval", "no-answering"]
+        long_options = ["input-dataset=", "input-run=", "output=", "eval-question-types", "eval-missing-truth", "eval-turn-one-rewrites", "no-rewriting", "no-retrieval", "no-answering"]
         opts, _ = getopt.getopt(sys.argv[1:], "", long_options)
     except getopt.GetoptError as err:
         print(str(err))
@@ -202,15 +207,12 @@ def get_retrieval_ground_truth(ground_truth, question_type, eval_missing_truth):
             retrieval_ground_truth[turn_id] = {"":1}
     return retrieval_ground_truth
 
-def evaluate_retrieval(ground_truth, run, eval_missing_truth, eval_model_rewrites):
+def evaluate_retrieval(ground_truth, run, eval_missing_truth, question_types):
     print("Evaluate: Passage Retrieval")
     result = {}
     retrieval_run = get_retrieval_run(run)
     for question_type in question_types:
         print("  " + question_type)
-        if question_type == "model" and not eval_model_rewrites:
-            print("    skipped for no Model_rewrite")
-            continue
         retrieval_ground_truth_for_type = get_retrieval_ground_truth(ground_truth, question_type, eval_missing_truth)
         retrieval_run_for_type = {turn_id:passages for (turn_id, passages) in retrieval_run.items() if turn_id in retrieval_ground_truth_for_type}
         if retrieval_run_for_type: # at least one turn for this type => evaluate
@@ -235,15 +237,12 @@ def get_answering_run(run):
                 answering_run[turn_id] = answer
     return answering_run
 
-def evaluate_answering(ground_truth, run, eval_missing_truth, eval_model_rewrites):
+def evaluate_answering(ground_truth, run, eval_missing_truth, question_types):
     print("Evaluate: Question Answering")
     result = {}
     answering_run = get_answering_run(run)
     for question_type in question_types:
         print("  " + question_type)
-        if question_type == "model" and not eval_model_rewrites:
-            print("    skipped for no Model_rewrite")
-            continue
         metric = load_metric("squad_v2")
         answers = 0
         for turn in tqdm(ground_truth, desc = "  "):
@@ -279,15 +278,21 @@ def has_model_rewrites(run):
             return True
     return False
 
-def evaluate(ground_truth, run, eval_missing_truth = False, eval_turn_one_rewrites = False, rewriting = True, retrieval = True, answering = True):
-    eval_model_rewrites = has_model_rewrites(run)
+def evaluate(ground_truth, run, eval_question_types = False, eval_missing_truth = False, eval_turn_one_rewrites = False, rewriting = True, retrieval = True, answering = True):
+    question_types = question_types_model_only
+    if eval_question_types:
+        if has_model_rewrites(run):
+            question_types = question_types_all
+        else:
+            question_types = question_types_no_model
+
     results = {}
     if rewriting:
         results.update(evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewrites))
     if retrieval:
-        results.update(evaluate_retrieval(ground_truth, run, eval_missing_truth, eval_model_rewrites))
+        results.update(evaluate_retrieval(ground_truth, run, eval_missing_truth, question_types))
     if answering:
-        results.update(evaluate_answering(ground_truth, run, eval_missing_truth, eval_model_rewrites))
+        results.update(evaluate_answering(ground_truth, run, eval_missing_truth, question_types))
     return results
 
 # MAIN
@@ -300,6 +305,7 @@ def main(options):
     results = evaluate(
             ground_truth = options["ground-truth"],
             run = options["run"],
+            eval_question_types = options["eval-question-types"],
             eval_missing_truth = options["eval-missing-truth"],
             eval_turn_one_rewrites = options["eval-turn-one-rewrites"],
             rewriting = options["rewriting"],

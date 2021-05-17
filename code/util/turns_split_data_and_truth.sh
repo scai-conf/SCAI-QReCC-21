@@ -9,11 +9,12 @@ echo "Max Conversation_no: $max_conversation_no"
 cat $turns_file \
   | jq --compact-output --sort-keys '.[]' \
   | gawk 'BEGIN {
-      output_question = "jq --indent 4 --sort-keys --slurp . > '$output_dir'/questions.json"
+      output_questions = "jq --indent 4 --sort-keys --slurp . > '$output_dir'/questions.json"
+      output_rewritten_questions = "jq --indent 4 --sort-keys --slurp . > '$output_dir'/questions-with-rewrites.json"
       output_truth = "jq --indent 4 --sort-keys --slurp . > '$output_dir'/ground-truth.json"
       next_conversation_no = '$max_conversation_no' + 1
-    } function add_question(conversation_no, turn_no, context, question) {
-      printf "{\"Conversation_no\":%d,\"Turn_no\":%d,\"Context\":%s,\"Question\":%s}\n", conversation_no, turn_no, context, question | output_question
+    } function add_question(conversation_no, turn_no, context, question, output) {
+      printf "{\"Conversation_no\":%d,\"Turn_no\":%d,\"Context\":%s,\"Question\":%s}\n", conversation_no, turn_no, context, question | output
     } function add_truth(model_conversation_no, model_turn_no, original_conversation_no, transformer_conversation_no, human_conversation_no, truth_rewrite, truth_passages, truth_answer) {
       printf "{\"Turns\":{\"model\":{\"Conversation_no\":%d,\"Turn_no\":%d},\"original\":{\"Conversation_no\":%d,\"Turn_no\":1},\"transformer\":{\"Conversation_no\":%d,\"Turn_no\":1},\"human\":{\"Conversation_no\":%d,\"Turn_no\":1}},\"Truth_rewrite\":%s,\"Truth_passages\":%s,\"Truth_answer\":%s}\n", model_conversation_no, model_turn_no, original_conversation_no, transformer_conversation_no, human_conversation_no, truth_rewrite, truth_passages, truth_answer | output_truth
     } {
@@ -31,24 +32,25 @@ cat $turns_file \
       match($0, /.*,"Truth_rewrite":(".*"),"Turn_no"/, truth_rewrites); truth_rewrite = truth_rewrites[1]
       match($0, /.*,"Turn_no":([0-9]*)/, turn_nos); turn_no = turn_nos[1]
 
-      add_question(conversation_no, turn_no, context, question)
+      add_question(conversation_no, turn_no, context, question, output_questions)
+      add_question(conversation_no, turn_no, context, question, output_rewritten_questions)
       if (turn_no == 1) {
         add_truth(conversation_no, turn_no, conversation_no, conversation_no, conversation_no, truth_rewrite, truth_passages, truth_answer)
       } else {
         original_conversation_no = next_conversation_no++
-        add_question(original_conversation_no, 1, "[]", question)
+        add_question(original_conversation_no, 1, "[]", question, output_rewritten_questions)
 
         transformer_conversation_no = original_conversation_no
         if (transformer_rewrite != question) {
           transformer_conversation_no = next_conversation_no++
-          add_question(transformer_conversation_no, 1, "[]", transformer_rewrite)
+          add_question(transformer_conversation_no, 1, "[]", transformer_rewrite, output_rewritten_questions)
         }
 
         human_conversation_no = original_conversation_no
         if (truth_rewrite != question) {
           if (truth_rewrite != transformer_rewrite) {
             human_conversation_no = next_conversation_no++
-            add_question(human_conversation_no, 1, "[]", truth_rewrite)
+            add_question(human_conversation_no, 1, "[]", truth_rewrite, output_rewritten_questions)
           } else {
             human_conversation_no = transformer_conversation_no
           }
