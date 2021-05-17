@@ -28,7 +28,7 @@ HEADER='''<h1>Run File Submissions for SCAI QReCC 21: Conversational Question An
 NOT_REGISTERED=HEADER +  'Your TIRA account is currently not registered for the shared task "SCAI QReCC 21: Conversational Question Answering Challenge".<br><br> Please contact us to register.'
 
 
-@app.route('/scai-qrecc21')
+@app.route('/run-upload-scai-qrecc21')
 def hello_world():
     vm = vm_name(request)
 
@@ -42,7 +42,7 @@ You can make software submissions at ''' + href_link + '''.<br>
 If you don't want to make software submissions, you can upload a run file with the following formular.<br>
 Please note (todo: add some hints on how to get your stuff on the leaderboard, etc).<br>
 
-<form action="/upload" method="POST" enctype="multipart/form-data">
+<form action="/run-upload-scai-qrecc21/upload" method="POST" enctype="multipart/form-data">
   <label for="user">Upload run file for: ''' + vm + '''</label><br>
   <input type="file" id="file" name="file">
   <input type="submit" value="Submit">
@@ -84,7 +84,7 @@ deleted: false
 taskId: "scai-qrecc"
 accessToken: "manual-run-no-access-token"'''
 
-@app.route('/upload',methods=['POST'])
+@app.route('/run-upload-scai-qrecc21/upload',methods=['POST'])
 def upload_file():
     vm = vm_name(request)
     if not vm:
