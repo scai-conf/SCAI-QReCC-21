@@ -76,6 +76,7 @@ question_types_model_only = ["model"]
 
 def parse_options():
     options = {
+        "digits": 3,
         "eval-question-types": False,
         "eval-missing-truth": False,
         "eval-turn-one-rewrites": False,
@@ -270,8 +271,8 @@ def evaluate_answering(ground_truth, run, eval_missing_truth, question_types):
                 metric.add(prediction = prediction, reference = reference)
         if answers > 0:
             score = metric.compute()
-            result[get_metric_name("Exact match", question_type)] = score['exact']
-            result[get_metric_name("F1", question_type)] = score['f1']
+            result[get_metric_name("Exact match", question_type)] = score['exact'] / 100
+            result[get_metric_name("F1", question_type)] = score['f1'] / 100
             print("    used %d answers" % answers)
         else:
             print("    skipped for no answers")
@@ -304,8 +305,8 @@ def evaluate(ground_truth, run, eval_question_types = False, eval_missing_truth 
 
 # MAIN
 
-def sprint_results(results):
-    measure_strings = [ "measure{\n  key: \"%s\"\n  value: \"%s\"\n}" % (name, value) for (name, value) in results.items()]
+def sprint_results(results, digits):
+    measure_strings = [ "measure{\n  key: \"%s\"\n  value: \"%0." + digits + "f\"\n}" % (name, value) for (name, value) in results.items()]
     return "\n".join(measure_strings)
 
 def main(options):
@@ -318,7 +319,7 @@ def main(options):
             rewriting = options["rewriting"],
             retrieval = options["retrieval"],
             answering = options["answering"])
-    results_string = sprint_results(results)
+    results_string = sprint_results(results, options["digits"])
     print(results_string)
     with open(options["output-file-name"], "w") as output_file:
         output_file.write(results_string)
