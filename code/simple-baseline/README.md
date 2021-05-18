@@ -5,7 +5,7 @@ This baseline mostly serves to kickstart your own submission (see below). It doe
   - Passage retrieval: BM25 with k1 = 0.82 and b = 0.68 as in the paper
   - Question answering: Use the sentence from the retrieved passages that contains the most of the stemmed noun phrases of the question (first of these in case of draws)
 
-To adapt this into your own submission:
+To adapt this for your own submission:
   - Question rewriting
     - If you have no own approach to rewriting, remove `Model-rewrite` from the `result` dict of the `run_for_turn` method
     - Otherwise replace the `else`-branch of `rewrite(turn)` with your approach
