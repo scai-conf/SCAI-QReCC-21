@@ -306,7 +306,7 @@ def evaluate(ground_truth, run, eval_question_types = False, eval_missing_truth 
 # MAIN
 
 def sprint_results(results, digits):
-    measure_strings = [ "measure{\n  key: \"%s\"\n  value: \"%0." + digits + "f\"\n}" % (name, value) for (name, value) in results.items()]
+    measure_strings = [ "measure{\n  key: \"%s\"\n  value: \"%0." + str(digits) + "f\"\n}" % (name, value) for (name, value) in results.items()]
     return "\n".join(measure_strings)
 
 def main(options):
