@@ -2,7 +2,7 @@
 
 This baseline mostly serves to kickstart your own submission (see below). It does the following:
   - Question rewriting: Return the question as-is
-  - Passage retrieval: BM25 with k1 = 0.82 and b = 0.68 as in the paper
+  - Passage retrieval: BM25 with k1 = 0.82 and b = 0.68 as in the [paper](https://arxiv.org/abs/2010.04898)
   - Question answering: Use the sentence from the retrieved passages that contains the most of the stemmed noun phrases of the question (first of these in case of draws)
 
 To adapt this for your own submission:
