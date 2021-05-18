@@ -21,11 +21,22 @@ def vm_name(request):
     print('Handle request for virtual machine "' + ret + '".')
     return ret
 
-HEADER='''<h1>Run File Submissions for SCAI QReCC 21: Conversational Question Answering Challenge</h1>
+HEADER='''<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<h1>Run File Submissions for SCAI QReCC 21: Conversational Question Answering Challenge</h1>
 
 '''
 
-NOT_REGISTERED=HEADER +  'Your TIRA account is currently not registered for the shared task "SCAI QReCC 21: Conversational Question Answering Challenge".<br><br> Please contact us to register.'
+FOOTER='''</body>
+</html>
+'''
+
+NOT_REGISTERED=HEADER +  'Your TIRA account is currently not registered for the shared task "SCAI QReCC 21: Conversational Question Answering Challenge".<br><br> Please contact us to register.' + FOOTER
 
 
 @app.route('/run-upload-scai-qrecc21')
@@ -46,7 +57,7 @@ Please note (todo: add some hints on how to get your stuff on the leaderboard, e
   <label for="user">Upload run file for: ''' + vm + '''</label><br>
   <input type="file" id="file" name="file">
   <input type="submit" value="Submit">
-</form>'''
+</form>''' + FOOTER
 
 def run_id():
     return datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
@@ -97,5 +108,5 @@ def upload_file():
 
     build_run(data, run_id(), vm)
 
-    return "Short message: it was successful.<br><br>Add name of run file, link to the evaluator, and link to the task page/page for additional submits"
+    return HEADER + "Short message: it was successful.<br><br>Add name of run file, link to the evaluator, and link to the task page/page for additional submits" + FOOTER
 
