@@ -54,11 +54,11 @@ Your software is expected to accept two arguments:
   - An input directory (named `$inputDataset` in TIRA) that contains the `questions.json` input file and `passages-index-anserini` directory. The latter contains a full [Anserini](https://github.com/castorini/anserini) index of the passage collection. Note that you need to install `openjdk-11-jdk-headless` to use it. We may be able to add more of such indices on request.
   - An output directory (named `$outputDir` in TIRA) into which your software needs to place the submission as `run.json`.
 
-Install your software to your VM. The go to the TIRA web interface and click "Add software". Specify the command to run your software (see the image for the [simple baseline](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline)).
+Install your software to your VM. Then go to the TIRA web interface and click "Add software". Specify the command to run your software (see the image for the [simple baseline](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline)).
 
 IMPORTANT: To ensure reproducibility, create a "Software" in the TIRA web interface for each parameter setting that you consider a submission to the challenge.
 
-Click on "Run" to execute your software for the selected input dataset. Your VM will not be accessible while your system is running, be detached from the internet, and afterwards restored to the state before the run. Since the test set is rather large (the simple baseline takes nearly 11 hours to complete), we highly recommend you first test your software on the `scai-qrecc21-toy-dataset-2021-05-15` input dataset. This dataset contains the first conversation (12 turns) only.
+Click on "Run" to execute your software for the selected input dataset. Your VM will not be accessible while your system is running, be detached from the internet (to ensure your software is fully installed in your virtual machine), and afterwards restored to the state before the run. Since the test set is rather large (the simple baseline takes nearly 11 hours to complete), we highly recommend you first test your software on the `scai-qrecc21-toy-dataset-2021-05-15` input dataset. This dataset contains the first conversation (12 turns) only.
 
 ![TIRA Interface: VM status and submission](img/tira-software-submission.png)
 
@@ -74,7 +74,7 @@ Coming soon
 ## Evaluation
 [[evaluation script](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/evaluation-script)]
 
-Once you run your submitted software or uploaded your run, "Run" the evaluator on that run through the TIRA web interface (below the software; works out-of-the-box).
+Once you run your software or uploaded your run, "Run" the evaluator on that run through the TIRA web interface (below the software; works out-of-the-box).
 
 ![TIRA Interface: Evaluation](img/tira-software-evaluation.png)
 
