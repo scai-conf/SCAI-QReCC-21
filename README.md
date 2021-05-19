@@ -51,7 +51,7 @@ You can use the [code of our simple baseline](https://github.com/scai-conf/SCAI-
 We recommend participants to upload (through SSH or RDP) their software/system to their dedicated TIRA virtual machine (assigned after registration), so that their runs can be reproduced and so that they can be easily applied to different data (of same format) in the future. The mail send to you after registration gives you the credentials to access the TIRA web interface and your VM. If you cannot connect to your VM, ensure it is powered on in the TIRA web interface.
 
 Your software is expected to accept two arguments:
-  - An input directory (named `$inputDataset` in TIRA) that contains the `questions.json` and `passages-index-anserini`. The latter contains a full [Anserini](https://github.com/castorini/anserini) index of the passage collection. Note that you need to install `openjdk-11-jdk-headless` to use it. We may be able to add more of such indices on request.
+  - An input directory (named `$inputDataset` in TIRA) that contains the `questions.json` input file and `passages-index-anserini` directory. The latter contains a full [Anserini](https://github.com/castorini/anserini) index of the passage collection. Note that you need to install `openjdk-11-jdk-headless` to use it. We may be able to add more of such indices on request.
   - An output directory (named `$outputDir` in TIRA) into which your software needs to place the submission as `run.json`.
 
 Install your software to your VM. The go to the TIRA web interface and click "Add software". Specify the command to run your software (see the image for the [simple baseline](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline)).
