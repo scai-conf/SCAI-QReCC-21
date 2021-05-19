@@ -1,10 +1,10 @@
 # SCAI-QReCC-21
-[[task page](https://scai.info/scai-qrecc/)] | [[tira](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15)]
+[[task page](https://scai.info/scai-qrecc/)] [[tira](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15)]
 
 Answer a series of contextually-dependent questions like they may occur in natural human-to-human conversations.
 
 ## Data
-[[questions](https://zenodo.org/record/4772532/files/scai-qrecc21-questions.json?download=1)] | [[passage collection](https://zenodo.org/record/4772532/files/passages.zip?download=1)] | [[entire dataset](https://doi.org/10.5281/zenodo.4748782)]
+[[questions](https://zenodo.org/record/4772532/files/scai-qrecc21-questions.json?download=1)] [[passage collection](https://zenodo.org/record/4772532/files/passages.zip?download=1)] [[entire dataset](https://doi.org/10.5281/zenodo.4748782)]
 
 The input format for the task (questions) is a JSON file:
 ```
@@ -23,7 +23,7 @@ Upon request, we will provide question files and submission possibilities for sy
 
 
 ## Submission
-Register for the task using [this form](https://docs.google.com/forms/d/1iRcQRCVRHilumnWtb1WBrGsrCpfdoB6N3i07q4sGJ4c/edit). We will then send you your TIRA login once it is ready.
+Register for the task using [this form](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link). We will then send you your TIRA login once it is ready.
 
 The challenge is hosted on [TIRA](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15). Participants are encouraged to upload their code and run the evaluation on the VMs provided by the platform to ensure reproducibility of the results. It is also possible to upload the submission as a single JSON file.
 
@@ -55,7 +55,7 @@ Coming soon
 
 
 ## Evaluation
-[[initial phase evaluation script](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/evaluation-script)]
+[[evaluation script](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/evaluation-script)]
 
 The evaluation is performed on the test split of the QReCC dataset. We use the ground truth annotations in the initial phase, and will update them with alternative answer spans and passages by pooling and crowdsourcing the relevance judgements over the results submitted by the challenge participants (similar to the TREC evaluation setup).
 
