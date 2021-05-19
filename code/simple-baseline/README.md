@@ -14,3 +14,11 @@ To adapt this for your own submission:
     - If your approach uses a different index, tell us organizers: we can put it next to the Anserini one
   - Question answering
     - Replace the `answer` method with your approach
+
+## Installation in TIRA
+```
+sudo apt update
+sudo apt install python3-pip openjdk-11-jdk-headless # java needed for anserini
+git clone https://github.com/scai-conf/SCAI-QReCC-21.git
+pip3 install -r SCAI-QReCC-21/code/simple-baseline/requirements.txt
+```
