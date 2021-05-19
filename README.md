@@ -41,7 +41,7 @@ The submission format for the task is a JSON file similar to the input:
   }, ...
 ]
 ```
-Example: [NAACL baseline](https://zenodo.org/record/4772532/files/scai-qrecc21-naacl-baseline.zip?download=1)
+Example: [QReCC paper (NAACL) baseline](https://zenodo.org/record/4772532/files/scai-qrecc21-naacl-baseline.zip?download=1)
 
 All `Model_xxx`-fields are optional: omit them if your system does not address the respective step.
 
