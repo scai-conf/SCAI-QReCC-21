@@ -87,7 +87,7 @@ We use the same metrics as the [QReCC paper](https://arxiv.org/abs/2010.04898), 
 
 ### Baselines
 We provide the following baselines for comparison:
-  - **scai-qrecc21-simple-baseline**: baseline for retrieval using original questions. Use [this code](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline) to kickstart your own submission.
+  - **scai-qrecc21-simple-baseline**: baseline for retrieval using original questions. We recommend to use [this code](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline) as a boilerplate to kickstart your own submission using the VM.
   - **scai-qrecc21-naacl-baseline**: results for the end-to-end approach using question rewriting reported in the [QReCC paper](https://arxiv.org/abs/2010.04898) (accepted at NAACL'21). This sample run is available [here](https://zenodo.org/record/4772532/files/scai-qrecc21-naacl-baseline.zip?download=1).
   
 Note that the baseline results differ from the ones reported in the paper since we made the following corrections to the evaluation script: (1) we do not evaluate the samples for which the ground truth is missing (i.e., no relevant passages or no answer text or no rewrite provided by the human annotators) (2) we skip evaluation of question rewrites for the first turn of a conversation.
