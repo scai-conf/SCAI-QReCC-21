@@ -82,5 +82,5 @@ Then go to the "Runs" section below and click on the blue (i)-icon of the evalua
 
 We use the [QReCC paper](https://arxiv.org/abs/2010.04898) annotations in the initial phase, and will update them with alternative answer spans and passages by pooling and crowdsourcing the relevance judgements over the results submitted by the challenge participants (similar to the TREC evaluation setup).
 
-We use the same metrics as the [QReCC paper](https://arxiv.org/abs/2010.04898), but may add more for the final evaluation: ROUGE1-R for question rewriting, Mean Reciprocal Rank (MRR) for passage retrieval, and F1 and Exact Match for question answering.
+We use the same metrics as the [QReCC paper](https://arxiv.org/abs/2010.04898), but may add more for the final evaluation: ROUGE1-R for question rewriting, Mean Reciprocal Rank (MRR) for passage retrieval, and F1 and Exact Match for question answering. However, different from the paper, we do not evaluate a step when the respective ground truth is missing (i.e., no relevant passages, no answer; applies to initial phase only) and when the query rewriting is trivial (i.e., for the first turn of a conversation).
 
