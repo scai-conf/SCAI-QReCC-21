@@ -83,10 +83,12 @@ Then go to the "Runs" section below and click on the blue (i)-icon of the evalua
 We use the [QReCC paper](https://arxiv.org/abs/2010.04898) annotations in the initial phase, and will update them with alternative answer spans and passages by pooling and crowdsourcing the relevance judgements over the results submitted by the challenge participants (similar to the TREC evaluation setup).
 
 ### Metrics
-We use the same metrics as the [QReCC paper](https://arxiv.org/abs/2010.04898), but may add more for the final evaluation: ROUGE1-R for question rewriting, Mean Reciprocal Rank (MRR) for passage retrieval, and F1 and Exact Match for question answering. However, different from the paper, we do not evaluate a step when the respective ground truth is missing (i.e., no relevant passages, no answer; applies to initial phase only) and when the query rewriting is trivial (i.e., for the first turn of a conversation).
+We use the same metrics as the [QReCC paper](https://arxiv.org/abs/2010.04898), but may add more for the final evaluation: ROUGE1-R for question rewriting, Mean Reciprocal Rank (MRR) for passage retrieval, and F1 and Exact Match for question answering.
 
 ### Baselines
 We provide the following baselines for comparison:
-  - **scai-qrecc21-simple-baseline**: Baseline to produce somewhat reasonable results with minimal code. Use [its code](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline) to kickstart your own submission.
-  - **scai-qrecc21-naacl-baseline**: End-to-end approach of the [QReCC paper](https://arxiv.org/abs/2010.04898) (accepted at NAACL'21). Run available [here](https://zenodo.org/record/4772532/files/scai-qrecc21-naacl-baseline.zip?download=1).
+  - **scai-qrecc21-simple-baseline**: baseline for retrieval using original questions. Use [this code](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline) to kickstart your own submission.
+  - **scai-qrecc21-naacl-baseline**: results for the end-to-end approach using question rewriting reported in the [QReCC paper](https://arxiv.org/abs/2010.04898) (accepted at NAACL'21). This sample run is available [here](https://zenodo.org/record/4772532/files/scai-qrecc21-naacl-baseline.zip?download=1).
+  
+Note that the baseline results differ from the ones reported in the paper since we made the following corrections to the evaluation script: (1) we do not evaluate the samples for which the ground truth is missing (i.e., no relevant passages or no answer text) (2) we skip evaluation of question rewrites the first turn of a conversation.
 
