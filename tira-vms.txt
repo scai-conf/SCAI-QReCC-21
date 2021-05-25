@@ -24,3 +24,4 @@
 tira k8s tira vm-create -r betaweb042.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova scai-qrecc21-master
 tira k8s tira vm-create -r betaweb111.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova scai-qrecc21-simple-baseline
 tira k8s tira vm-create -r betaweb132.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova scai-qrecc21-naacl-baseline
+tira k8s tira vm-create -r betaweb112.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova golem
