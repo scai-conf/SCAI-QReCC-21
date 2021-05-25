@@ -187,8 +187,8 @@ def evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewr
 
     if rewrites > 0:
         score = metric.compute()
-        return { "ROUGE1-R": score['rouge1'].mid.recall }
         print("  used %d rewrites" % rewrites)
+        return { "ROUGE1-R": score['rouge1'].mid.recall }
     else:
         print("  skipped for no rewrites")
         return { }
