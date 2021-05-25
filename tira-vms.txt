@@ -1,0 +1,26 @@
+# Available hosts (https://git.webis.de/code-generic/code-saltstack/-/blob/master/src/srv/salt/pillars/tira.sls)
+  - betaweb002.medien.uni-weimar.de
+  - betaweb042.medien.uni-weimar.de
+  - betaweb111.medien.uni-weimar.de
+  - betaweb112.medien.uni-weimar.de
+  - betaweb115.medien.uni-weimar.de
+  - betaweb116.medien.uni-weimar.de
+  - betaweb117.medien.uni-weimar.de
+  - betaweb118.medien.uni-weimar.de
+  - betaweb119.medien.uni-weimar.de
+  - betaweb120.medien.uni-weimar.de
+  - betaweb121.medien.uni-weimar.de
+  - betaweb124.medien.uni-weimar.de
+  - betaweb126.medien.uni-weimar.de
+  - betaweb128.medien.uni-weimar.de
+  - betaweb129.medien.uni-weimar.de
+  - betaweb131.medien.uni-weimar.de
+  - betaweb132.medien.uni-weimar.de
+  - betaweb133.medien.uni-weimar.de
+  - betaweb134.medien.uni-weimar.de
+  - betaweb135.medien.uni-weimar.de
+
+# VMs
+tira k8s tira vm-create -r betaweb042.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova scai-qrecc21-master
+tira k8s tira vm-create -r betaweb111.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova scai-qrecc21-simple-baseline
+tira k8s tira vm-create -r betaweb132.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova scai-qrecc21-naacl-baseline
