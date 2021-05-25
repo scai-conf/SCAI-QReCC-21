@@ -65,6 +65,7 @@ def run_id():
 def build_run(data, run_id, vm):
     run_dir = os.path.join(OUT_DIR, vm, run_id)
     os.makedirs(os.path.join(run_dir, 'output'))
+    os.makedirs(os.path.join(OUT_DIR, 'softwares', 'scai-qrecc', vm))
     output_file = os.path.join(run_dir, 'output', 'run.json')
 
     with open(os.path.join(run_dir, 'output', 'run.json'), 'wb') as f:
@@ -77,6 +78,9 @@ def build_run(data, run_id, vm):
         file_list = check_output(['tree', '-ahv', os.path.join(run_dir, 'output')])
         f.write(file_list)
 
+    with open(os.path.join(OUT_DIR, 'softwares', 'scai-qrecc', vm, 'softwares.prototext'), 'w') as f:
+        f.write(run_software())
+
     with open(os.path.join(run_dir, 'size.txt'), 'wb') as f:
         f.write(check_output(['bash', '-c', '(du -sb "' + run_dir + '" && du -hs "' +  run_dir + '") | cut -f1']))
         f.write(check_output(['bash', '-c', 'find "' + os.path.join(run_dir, 'output') + '" -type f -exec cat {} + | wc -l']))
@@ -86,14 +90,29 @@ def build_run(data, run_id, vm):
     check_output(['chmod', '775', '-R', os.path.join(OUT_DIR, vm)])
     
 def run_prototext(run_id):
-    return '''softwareId: "ManualRun"
+    return '''softwareId: "software1"
 runId: "'''+ run_id + '''"
-inputDataset: "scai-qrecc21-toy-dataset-2021-05-15"
+inputDataset: "scai-qrecc21-test-dataset-2021-05-15"
 inputRun: "none"
 downloadable: true
 deleted: false
 taskId: "scai-qrecc"
 accessToken: "manual-run-no-access-token"'''
+
+def run_software():
+    current_time = datetime.datetime.now().strftime('%a %b %d %H:%M:%S UTC %Y')
+    return '''softwares {
+  id: "software1"
+  count: "1"
+  command: "# This software documents a manual upload of a run file on ''' + current_time + '''"
+  workingDirectory: ""
+  dataset: "scai-qrecc21-test-dataset-2021-05-15"
+  run: "none"
+  creationDate: "''' + current_time + '''"
+  lastEditDate: "''' + current_time + '''"
+  deleted: false
+}
+'''
 
 @app.route('/run-upload-scai-qrecc21/upload',methods=['POST'])
 def upload_file():
@@ -102,6 +121,7 @@ def upload_file():
         return NOT_REGISTERED
     if not request.files or 'file' not in request.files:
         raise ValueError('There is no file submitted to the server.')
+
 
     #touche-2021-task1/macbeth/2021-05-06-08-39-13/output
     data = request.files['file'].read()
