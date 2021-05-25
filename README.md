@@ -1,5 +1,5 @@
 # SCAI-QReCC-21
-[[task page](https://scai.info/scai-qrecc/)] [[tira](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15)]
+[[task page](https://scai.info/scai-qrecc/)] [[tira](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15)] [[contact](mailto:scai-qrecc@googlegroups.com)]
 
 Answer a series of contextually-dependent questions like they may occur in natural human-to-human conversations.
 
