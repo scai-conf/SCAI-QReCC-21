@@ -44,7 +44,7 @@
 #   Also evaluate turns with missing ground truth (i.e., no relevant passages, no answer) like in the paper.
 #
 # --eval-turn-one-rewrites
-#   Also evaluate (trivial) question rewrites for first turns of a conversations like in the paper.
+#   Also evaluate question rewrites for first turns of a conversations.
 #
 # --no-rewriting
 #   Do no evaluate query rewriting, even if Model_rewrite fields exist in the run files.
