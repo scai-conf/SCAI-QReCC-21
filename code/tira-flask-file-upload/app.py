@@ -65,6 +65,7 @@ def run_id():
 def build_run(data, run_id, vm):
     run_dir = os.path.join(OUT_DIR, vm, run_id)
     os.makedirs(os.path.join(run_dir, 'output'))
+    os.makedirs(os.path.join(OUT_DIR, 'softwares', 'scai-qrecc', vm))
     output_file = os.path.join(run_dir, 'output', 'run.json')
 
     with open(os.path.join(run_dir, 'output', 'run.json'), 'wb') as f:
@@ -77,7 +78,7 @@ def build_run(data, run_id, vm):
         file_list = check_output(['tree', '-ahv', os.path.join(run_dir, 'output')])
         f.write(file_list)
 
-    with open(is.path.join(OUT_DIR, 'softwares', 'scai-qrecc', vm)):
+    with open(os.path.join(OUT_DIR, 'softwares', 'scai-qrecc', vm, 'softwares.prototext'), 'w') as f:
         f.write(run_software())
 
     with open(os.path.join(run_dir, 'size.txt'), 'wb') as f:
