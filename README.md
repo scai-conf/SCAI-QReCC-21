@@ -1,7 +1,12 @@
 # SCAI-QReCC-21
-[[contact](mailto:scai-qrecc@googlegroups.com)] [[forum](https://www.tira.io/c/scai/)] [[registration](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link)] [[task page](https://scai.info/scai-qrecc/)] [[tira](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15)]
+[[contact](mailto:scai-qrecc@googlegroups.com)] [[forum](https://www.tira.io/c/scai/)] [[registration](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link)] [[tira](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15)] [[workshop](https://scai.info/)]
 
 Answer a series of contextually-dependent questions like they may occur in natural human-to-human conversations.
+
+- Submission deadline: September 8, 2021
+- Results announcement: September 30, 2021
+- Workshop presentations: October 8, 2021
+
 
 ## Data
 [[questions](https://zenodo.org/record/4772532/files/scai-qrecc21-questions.json?download=1)] [[passage collection](https://zenodo.org/record/4772532/files/passages.zip?download=1)] [[entire dataset](https://doi.org/10.5281/zenodo.4748782)]
