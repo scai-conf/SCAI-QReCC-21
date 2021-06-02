@@ -32,7 +32,7 @@ Register for the task using [this form](https://docs.google.com/forms/d/e/1FAIpQ
 
 The challenge is hosted on [TIRA](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15). Participants are encouraged to upload their code and run the evaluation on the VMs provided by the platform to ensure reproducibility of the results. It is also possible to upload the submission as a single JSON file.
 
-The submission format for the task is a JSON file similar to the input:
+The submission format for the task is a JSON file similar to the input (all `Model_xxx`-fields are optional and you can omit them from the submission, e.g. provide only Conversation_no, Turn_no and Model_answer to get the EM and F1 scores for the generated answers):
 ```
 [
   {
@@ -47,8 +47,6 @@ The submission format for the task is a JSON file similar to the input:
 ]
 ```
 Example: [QReCC paper (NAACL) baseline](https://zenodo.org/record/4772532/files/scai-qrecc21-naacl-baseline.zip?download=1)
-
-All `Model_xxx`-fields are optional: omit them if your system does not address the respective step.
 
 You can use the [code of our simple baseline](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline) to get started.
 
