@@ -95,3 +95,21 @@ We provide the following baselines for comparison:
   
 Note that the baseline results differ from the ones reported in the paper since we made one correction to the evaluation script: we do not evaluate the samples for which the ground truth is missing (i.e., no relevant passages or no answer text or no rewrite provided by the human annotators). We also changed the ROUGE implementation which caused minor differences there.
 
+### Resources
+Some useful links to get you started on a new conversational open-domain QA system:
+
+#### Conversational Passage Retrieval (CPR)
+
+  - [Chatty Goose](https://github.com/castorini/chatty-goose)
+
+#### Dense Passage Retrieval (DPR)
+
+  - [Haystack](https://colab.research.google.com/github/deepset-ai/haystack/blob/master/tutorials/Tutorial6_Better_Retrieval_via_DPR.ipynb)
+  - [ColBERT](https://github.com/stanford-futuredata/ColBERT)
+
+#### Question Reformulation (QR)
+
+  - [QuReTeC](https://github.com/nickvosk/sigir2020-query-resolution)
+  - [BART-FC](https://github.com/aquaktus/CAsT_BART_query_rewriting)
+
+
