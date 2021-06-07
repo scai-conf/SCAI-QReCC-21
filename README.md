@@ -1,5 +1,5 @@
 # SCAI-QReCC-21
-[[contact](mailto:scai-qrecc@googlegroups.com)] [[forum](https://www.tira.io/c/scai/)] [[registration](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link)] [[leaderboard](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15)] [[workshop](https://scai.info/)]
+[[leaderboard](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15)] [[registration](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link)] [[SCAI](https://scai.info/)]  [[forum](https://www.tira.io/c/scai/)] [[contact](mailto:scai-qrecc@googlegroups.com)]
 
 Answer a series of contextually-dependent questions like they may occur in natural human-to-human conversations.
 
