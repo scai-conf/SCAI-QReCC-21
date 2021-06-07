@@ -74,7 +74,7 @@ Coming soon
 
 
 ## Evaluation
-[[evaluation script](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/evaluation-script)]
+[[script](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/evaluation-script)]
 
 Once you run your software or uploaded your run, "Run" the evaluator on that run through the TIRA web interface (below the software; works out-of-the-box).
 
