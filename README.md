@@ -9,7 +9,7 @@ Answer a series of contextually-dependent questions like they may occur in natur
 
 
 ## Data
-[[questions](https://zenodo.org/record/4772532/files/scai-qrecc21-questions.json?download=1)] [[passage collection](https://zenodo.org/record/4772532/files/passages.zip?download=1)] [[entire dataset](https://doi.org/10.5281/zenodo.4748782)]
+[[QA dialogues](https://zenodo.org/record/4772532/files/scai-qrecc21-questions.json?download=1)] [[Passage collection](https://zenodo.org/record/4772532/files/passages.zip?download=1)] [[Zenodo](https://doi.org/10.5281/zenodo.4748782)]
 
 The input format for the task (questions) is a JSON file:
 ```
