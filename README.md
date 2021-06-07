@@ -98,7 +98,7 @@ Note that the baseline results differ from the ones reported in the paper since 
 ### Resources
 Some useful links to get you started on a new conversational open-domain QA system:
 
-#### Conversational Passage Retrieval (CPR)
+#### Conversational Passage Retrieval
 
   - [Chatty Goose](https://github.com/castorini/chatty-goose)
 
