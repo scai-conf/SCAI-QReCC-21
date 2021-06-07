@@ -102,6 +102,11 @@ Some useful links to get you started on a new conversational open-domain QA syst
 
   - [Chatty Goose](https://github.com/castorini/chatty-goose)
 
+#### Answer Generation
+
+  - [BART](https://huggingface.co/facebook/bart-large)
+  - [ELECTRA](https://huggingface.co/google/electra-large-generator)
+
 #### Dense Passage Retrieval (DPR)
 
   - [Haystack](https://colab.research.google.com/github/deepset-ai/haystack/blob/master/tutorials/Tutorial6_Better_Retrieval_via_DPR.ipynb)
