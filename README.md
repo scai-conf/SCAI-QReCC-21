@@ -105,6 +105,7 @@ Some useful links to get you started on a new conversational open-domain QA syst
 #### Dense Passage Retrieval (DPR)
 
   - [Haystack](https://colab.research.google.com/github/deepset-ai/haystack/blob/master/tutorials/Tutorial6_Better_Retrieval_via_DPR.ipynb)
+  - [Binary Passage Retriever](https://github.com/studio-ousia/bpr)
   - [ColBERT](https://github.com/stanford-futuredata/ColBERT)
 
 #### Question Reformulation (QR)
