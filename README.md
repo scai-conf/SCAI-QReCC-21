@@ -11,6 +11,8 @@ Answer a series of contextually-dependent questions like they may occur in natur
 ## Data
 [[dialogues](https://zenodo.org/record/4772532/files/scai-qrecc21-questions.json?download=1)] [[passages](https://zenodo.org/record/4772532/files/passages.zip?download=1)] [[Zenodo](https://doi.org/10.5281/zenodo.4748782)]
 
+The passage collection is 27.5GB!
+
 The input format for the task (questions) is a JSON file:
 ```
 [
