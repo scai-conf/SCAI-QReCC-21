@@ -95,7 +95,13 @@ We provide the following baselines for comparison:
   - **scai-qrecc21-simple-baseline**: BM25 baseline for passage retrieval using original conversational questions without rewriting. We recommend to use [this code](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline) as a boilerplate to kickstart your own submission using the VM.
   - **scai-qrecc21-naacl-baseline**: results for the end-to-end approach using supervised question rewriting and QA models reported in the [QReCC paper](https://arxiv.org/abs/2010.04898) (accepted at NAACL'21). This sample run is available [here](https://zenodo.org/record/4772532/files/scai-qrecc21-naacl-baseline.zip?download=1).
   
-Note that the baseline results differ from the ones reported in the paper since we made one correction to the evaluation script: we do not evaluate the samples for which the ground truth is missing (i.e., no relevant passages or no answer text or no rewrite provided by the human annotators). We also changed the ROUGE implementation which caused minor differences there.
+Note that the baseline results differ from the ones reported in the paper since we made several corrections to the evaluation script and the ground truth annotations:
+
+* We excluded the samples for which the ground truth is missing from the evaluation (i.e., no relevant passages or no answer text or no rewrite provided by the human annotators)
+
+* We removed 5,251 passages judgements annotated by the heuristic as relevant for the short answers with lengths <= 5 since these matches are often trivial and unrelated, e.g., the same noun phrase appearing in different contexts.
+
+
 
 ### Resources
 Some useful links to get you started on a new conversational open-domain QA system:
