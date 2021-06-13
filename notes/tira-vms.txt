@@ -26,3 +26,4 @@ tira k8s tira vm-create -r betaweb111.medien.uni-weimar.de tira-ubuntu-20-04-des
 tira k8s tira vm-create -r betaweb132.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova scai-qrecc21-naacl-baseline
 tira k8s tira vm-create -r betaweb112.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova golem
 tira k8s tira vm-create -r betaweb113.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova t-bob
+tira k8s tira vm-create -r betaweb115.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova ultron
