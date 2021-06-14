@@ -67,5 +67,8 @@ def upload_file():
 
     build_run(data, vm, datetime.datetime.now(), input_dataset)
 
-    return redirect('/task/scai-qrecc/user/' + str(vm) + '/', code=303)
+    ret = redirect('/task/scai-qrecc/user/' + str(vm) + '/', code=303)
+    ret.autocorrect_location_header = False
+
+    return ret
 
