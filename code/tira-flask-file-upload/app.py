@@ -67,5 +67,5 @@ def upload_file():
 
     build_run(data, vm, datetime.datetime.now(), input_dataset)
 
-    return redirect('https://www.tira.io/task/scai-qrecc/user/' + str(vm) + '/', code=302)
+    return redirect('https://www.tira.io/task/scai-qrecc/user/' + str(vm) + '/', code=303)
 

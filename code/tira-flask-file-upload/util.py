@@ -29,8 +29,8 @@ def next_software_num(vm_id):
         return max_num +1
     return 1
 
-def run_prototext(run_id, input_dataset):
-    return '''softwareId: "software1"
+def run_prototext(run_id, input_dataset, software_id):
+    return '''softwareId: "software''' + str(software_id) + '''"
 runId: "'''+ run_id + '''"
 inputDataset: "''' + input_dataset + '''"
 inputRun: "none"
@@ -68,7 +68,7 @@ def build_run(data, vm, current_time, input_dataset):
         f.write(data)
 
     with open(os.path.join(run_dir, 'run.prototext'), 'w') as f:
-        f.write(run_prototext(run_id(current_time), input_dataset))
+        f.write(run_prototext(run_id(current_time), input_dataset, next_software_num(vm)))
 
     with open(os.path.join(run_dir, 'file-list.txt'), 'wb') as f:
         file_list = check_output(['tree', '-ahv', os.path.join(run_dir, 'output')])
