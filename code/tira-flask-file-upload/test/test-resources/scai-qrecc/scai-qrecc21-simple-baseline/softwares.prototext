@@ -1,0 +1,11 @@
+softwares {
+  id: "software1"
+  count: "1"
+  command: "does-not-matter"
+  workingDirectory: ""
+  dataset: "scai-qrecc21-test-dataset-2021-05-15"
+  run: "none"
+  creationDate: "Mon May 17 09:49:29 UTC 2021"
+  lastEditDate: "Mon May 17 09:49:29 UTC 2021"
+  deleted: false
+}

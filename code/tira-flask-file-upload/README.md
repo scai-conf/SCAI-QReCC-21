@@ -1,5 +1,9 @@
 # Tira Flask File Upload
 
+## Development
+
+Run tests with: `make test`
+
 ## How to manualy upload a file
 
 - In [app.py](app.py) manipulate the method `vm_name` to always return your `"<VM-NAME>"`

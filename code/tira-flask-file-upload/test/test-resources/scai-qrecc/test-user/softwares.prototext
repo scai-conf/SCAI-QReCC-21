@@ -1,0 +1,55 @@
+softwares {
+  id: "software1"
+  count: "1"
+  command: ""
+  workingDirectory: ""
+  dataset: ""
+  run: ""
+  creationDate: "Mon May 17 13:39:46 UTC 2021"
+  lastEditDate: "Mon May 17 13:53:24 UTC 2021"
+  deleted: false
+}
+softwares {
+  id: "software2"
+  count: "2"
+  command: ""
+  workingDirectory: ""
+  dataset: ""
+  run: ""
+  creationDate: "Mon May 17 13:54:12 UTC 2021"
+  lastEditDate: "Mon May 17 13:55:42 UTC 2021"
+  deleted: false
+}
+softwares {
+  id: "software3"
+  count: "3"
+  command: ""
+  workingDirectory: ""
+  dataset: ""
+  run: ""
+  creationDate: "Mon May 17 14:20:51 UTC 2021"
+  lastEditDate: "Mon May 17 14:20:51 UTC 2021"
+  deleted: false
+}
+softwares {
+  id: "software-run-4"
+  count: "4"
+  command: "#software-run-4: This software serves as placeholder software for the uploaded run software-run-4"
+  workingDirectory: ""
+  dataset: ""
+  run: ""
+  creationDate: "Mon May 17 14:20:51 UTC 2021"
+  lastEditDate: "Mon May 17 14:20:51 UTC 2021"
+  deleted: false
+}
+softwares {
+  id: "software5"
+  count: "5"
+  command: ""
+  workingDirectory: ""
+  dataset: ""
+  run: ""
+  creationDate: "Mon May 17 15:44:35 UTC 2021"
+  lastEditDate: "Mon May 17 15:44:35 UTC 2021"
+  deleted: false
+}

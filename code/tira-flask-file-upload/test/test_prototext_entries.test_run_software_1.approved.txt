@@ -1,0 +1,11 @@
+softwares {
+  id: "software23"
+  count: "23"
+  command: "# This software documents a manual upload of a run file on Wed Jun 01 13:33:00 UTC 2005"
+  workingDirectory: ""
+  dataset: "my-test-dataset-1"
+  run: "none"
+  creationDate: "Wed Jun 01 13:33:00 UTC 2005"
+  lastEditDate: "Wed Jun 01 13:33:00 UTC 2005"
+  deleted: false
+}

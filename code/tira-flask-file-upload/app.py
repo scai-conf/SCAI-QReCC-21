@@ -1,25 +1,8 @@
-from flask import Flask
+from flask import Flask, redirect
 from flask import request
 import datetime
-import json
-import os
-from subprocess import check_output
+from util import vm_name, build_run
 app = Flask(__name__)
-
-OUT_DIR='/mnt/ceph/tira/data/runs/scai-qrecc21-toy-dataset-2021-05-15'
-
-def vm_name(request):
-    if not(request) or not(request.headers) or not('X-Disraptor-Groups' in request.headers):
-        return None
-    
-    groups = request.headers.get('X-Disraptor-Groups')
-    if not groups or 'tira_vm_' not in groups:
-        return None
-    ret = (',' + groups +',').split(',tira_vm_')[1].split(',')[0]
-    ret = ret if ret else None
-
-    print('Handle request for virtual machine "' + ret + '".')
-    return ret
 
 HEADER='''<!DOCTYPE html>
 <html>
@@ -55,78 +38,34 @@ Please note (todo: add some hints on how to get your stuff on the leaderboard, e
 
 <form action="/run-upload-scai-qrecc21/upload" method="POST" enctype="multipart/form-data">
   <label for="user">Upload run file for: ''' + vm + '''</label><br>
-  <input type="file" id="file" name="file">
+  <label for="dataset">Dataset:</label>
+  <select name="dataset" id="dataset">
+    <option value="scai-qrecc21-test-dataset-2021-05-15">scai-qrecc21-test-dataset-2021-05-15</option>
+    <option value="scai-qrecc21-toy-dataset-2021-05-15">scai-qrecc21-toy-dataset-2021-05-15</option>
+  </select><br>
+  <label for="file">Run-File:</label>
+  <input type="file" id="file" name="file"><br>
   <input type="submit" value="Submit">
 </form>''' + FOOTER
 
-def run_id():
-    return datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-
-def build_run(data, run_id, vm):
-    run_dir = os.path.join(OUT_DIR, vm, run_id)
-    os.makedirs(os.path.join(run_dir, 'output'))
-    os.makedirs(os.path.join(OUT_DIR, 'softwares', 'scai-qrecc', vm))
-    output_file = os.path.join(run_dir, 'output', 'run.json')
-
-    with open(os.path.join(run_dir, 'output', 'run.json'), 'wb') as f:
-        f.write(data)
-
-    with open(os.path.join(run_dir, 'run.prototext'), 'w') as f:
-        f.write(run_prototext(run_id))
-
-    with open(os.path.join(run_dir, 'file-list.txt'), 'wb') as f:
-        file_list = check_output(['tree', '-ahv', os.path.join(run_dir, 'output')])
-        f.write(file_list)
-
-    with open(os.path.join(OUT_DIR, 'softwares', 'scai-qrecc', vm, 'softwares.prototext'), 'w') as f:
-        f.write(run_software())
-
-    with open(os.path.join(run_dir, 'size.txt'), 'wb') as f:
-        f.write(check_output(['bash', '-c', '(du -sb "' + run_dir + '" && du -hs "' +  run_dir + '") | cut -f1']))
-        f.write(check_output(['bash', '-c', 'find "' + os.path.join(run_dir, 'output') + '" -type f -exec cat {} + | wc -l']))
-        f.write(check_output(['bash', '-c', 'find "' + os.path.join(run_dir, 'output') + '" -type f | wc -l']))
-        f.write(check_output(['bash', '-c', 'find "' + os.path.join(run_dir, 'output') + '" -type d | wc -l']))
-
-    check_output(['chmod', '775', '-R', os.path.join(OUT_DIR, vm)])
     
-def run_prototext(run_id):
-    return '''softwareId: "software1"
-runId: "'''+ run_id + '''"
-inputDataset: "scai-qrecc21-test-dataset-2021-05-15"
-inputRun: "none"
-downloadable: true
-deleted: false
-taskId: "scai-qrecc"
-accessToken: "manual-run-no-access-token"'''
-
-def run_software():
-    current_time = datetime.datetime.now().strftime('%a %b %d %H:%M:%S UTC %Y')
-    return '''softwares {
-  id: "software1"
-  count: "1"
-  command: "# This software documents a manual upload of a run file on ''' + current_time + '''"
-  workingDirectory: ""
-  dataset: "scai-qrecc21-test-dataset-2021-05-15"
-  run: "none"
-  creationDate: "''' + current_time + '''"
-  lastEditDate: "''' + current_time + '''"
-  deleted: false
-}
-'''
-
 @app.route('/run-upload-scai-qrecc21/upload',methods=['POST'])
 def upload_file():
     vm = vm_name(request)
+
     if not vm:
         return NOT_REGISTERED
     if not request.files or 'file' not in request.files:
         raise ValueError('There is no file submitted to the server.')
+    if not request.form or 'dataset' not in request.form:
+        raise ValueError('There is dataset submitted to the server.')
 
-
-    #touche-2021-task1/macbeth/2021-05-06-08-39-13/output
     data = request.files['file'].read()
+    input_dataset = request.form['dataset']
+    if input_dataset not in ['scai-qrecc21-test-dataset-2021-05-15', 'scai-qrecc21-toy-dataset-2021-05-15']:
+        raise ValueError('Unknown dataset: ' + str(input_dataset))
 
-    build_run(data, run_id(), vm)
+    build_run(data, vm, datetime.datetime.now(), input_dataset)
 
-    return HEADER + "Short message: it was successful.<br><br>Add name of run file, link to the evaluator, and link to the task page/page for additional submits" + FOOTER
+    return redirect('https://www.tira.io/task/scai-qrecc/user/' + str(vm) + '/', code=302)
 
