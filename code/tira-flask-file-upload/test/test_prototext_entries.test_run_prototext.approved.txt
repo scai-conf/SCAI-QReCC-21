@@ -1,0 +1,8 @@
+softwareId: "software1"
+runId: "2005-06-01-13-33-00"
+inputDataset: "scai-qrecc21-test-dataset-2021-05-15"
+inputRun: "none"
+downloadable: true
+deleted: false
+taskId: "scai-qrecc"
+accessToken: "manual-run-no-access-token"

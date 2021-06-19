@@ -1,6 +1,6 @@
 from python:3.6
 
-RUN pip3 install flask \
+RUN pip3 install flask nose approvaltests \
 	&& apt-get update \
 	&& apt-get install tree
 WORKDIR /app
