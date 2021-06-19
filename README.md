@@ -118,6 +118,7 @@ Some useful links to get you started on a new conversational open-domain QA syst
 
 #### Dense Passage Retrieval (DPR)
 
+  - [BEIR](https://github.com/UKPLab/beir)
   - [Haystack](https://colab.research.google.com/github/deepset-ai/haystack/blob/master/tutorials/Tutorial6_Better_Retrieval_via_DPR.ipynb)
   - [BPR](https://github.com/studio-ousia/bpr)
   - [ColBERT](https://github.com/stanford-futuredata/ColBERT)
