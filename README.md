@@ -116,14 +116,14 @@ Some useful links to get you started on a new conversational open-domain QA syst
   - [BART](https://huggingface.co/facebook/bart-large)
   - [ELECTRA](https://huggingface.co/google/electra-large-generator)
 
-#### Dense Passage Retrieval (DPR)
+#### Passage Retrieval
 
   - [BEIR](https://github.com/UKPLab/beir)
   - [Haystack](https://colab.research.google.com/github/deepset-ai/haystack/blob/master/tutorials/Tutorial6_Better_Retrieval_via_DPR.ipynb)
   - [BPR](https://github.com/studio-ousia/bpr)
   - [ColBERT](https://github.com/stanford-futuredata/ColBERT)
 
-#### Question Reformulation (QR)
+#### Conversational Question Reformulation
 
   - [QuReTeC](https://github.com/nickvosk/sigir2020-query-resolution)
   - [BART-FC](https://github.com/aquaktus/CAsT_BART_query_rewriting)
