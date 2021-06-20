@@ -19,14 +19,13 @@ The input format for the task (questions) is a JSON file:
   {
     "Conversation_no": <number>,
     "Turn_no": X,
-    "Context": [ "<question1>", "<answer-to-question1>", ... "<questionX-1>", "<answer-to-questionX-1>" ],
     "Question": "<questionX>"
   }, ...
 ]
 ```
 With `X` being the number of the question in the conversation. Questions with the same `Conversation_no` are from the same conversation.
 
-Upon request, we will provide question files and submission possibilities for systems that address not all three steps.
+Upon request, we will provide input files and additional leaderboards for systems that address the subtasks of passage retrieval, answer generation and question reformulation separately.
 
 
 ## Submission
