@@ -109,6 +109,7 @@ Some useful links to get you started on a new conversational open-domain QA syst
 #### Conversational Passage Retrieval
 
   - [ConvDR](https://github.com/thunlp/ConvDR)
+  - [CQE](https://arxiv.org/pdf/2104.08707.pdf)
   - [Chatty Goose](https://github.com/castorini/chatty-goose)
 
 #### Answer Generation
