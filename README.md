@@ -114,6 +114,7 @@ Some useful links to get you started on a new conversational open-domain QA syst
 
 #### Answer Generation
 
+  - [RAG](https://huggingface.co/transformers/model_doc/rag.html)
   - [BART](https://huggingface.co/facebook/bart-large)
   - [ELECTRA](https://huggingface.co/google/electra-large-generator)
 
