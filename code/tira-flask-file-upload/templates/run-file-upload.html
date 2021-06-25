@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SCAI QReCC 21: Run File Submissions</title>
+<link href="https://www.tira.io/static/css/tira-discourse-fix.css" rel="stylesheet" />
+<link href="https://www.tira.io/static/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<script>
+function uploadInProgress() {
+		document.getElementById('run-upload-footer').innerHTML = '<h1>The upload of your run file is in progress.</h1> <p>Uploading large run files may take a moment.</p> <p>You will automatically be redirected to the overview of your runs after your upload was successful.</p>';
+}
+</script>
+<div class="container">
+
+  <div id="runs" class="row">
+    <div class="col-xs-12">
+      <div class="tira-panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Run File Submissions for SCAI QReCC 21: Conversational Question Answering Challenge</h3>
+        </div>
+	<div class="panel-body">
+	{% autoescape false %}
+	The preferred way to submit runs for the shared task is via software submissions in TIRA to ensure reproducibility.<br>
+	You can make software submissions at {{ href_link }}.<br>
+	If you don't want to make software submissions, you can upload a run file with the following formular.<br>
+	Please see our <a href="https://github.com/scai-conf/SCAI-QReCC-21">GitHub repository</a> for further instructions.<br>
+	{% endautoescape %}
+
+	<br>
+	<br>
+        <form action="/run-upload-scai-qrecc21/upload" method="POST" enctype="multipart/form-data">
+          <dl class="dl-horizontal" style="margin-bottom:0px;">
+            <dt>Upload run file for</dt>
+	    <dd>{{ vm }}</dd>
+	    <dt>Dataset</dt>
+	    <dd>
+              <select name="dataset" id="dataset">
+                <option value="scai-qrecc21-test-dataset-2021-05-15">scai-qrecc21-test-dataset-2021-05-15</option>
+                <option value="scai-qrecc21-toy-dataset-2021-05-15">scai-qrecc21-toy-dataset-2021-05-15</option>
+              </select>
+            </dd>
+	    <dt>Run File</dt>
+	    <dd>
+              <input type="file" id="file" name="file">
+	    </dd>
+	    <dt></dt>
+	    <dd></dd>
+	    <dt></dt>
+	    <dd>
+              <input type="submit" value="Submit" onclick="uploadInProgress();">
+	    </dd>
+          </dl>
+        </form>
+        </div>
+	<div id="run-upload-footer" class="panel-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
+
