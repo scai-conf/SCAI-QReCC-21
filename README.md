@@ -19,7 +19,6 @@ The input format for the task (questions) is a JSON file:
   {
     "Conversation_no": <number>,
     "Turn_no": X,
-    "Context": "<question1, question2, ..., questionX-1>"
     "Question": "<questionX>"
   }, ...
 ]
