@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """Simple baseline for the SCAI QReCC 21 challenge"""
-# Version: 2021-05-14
+# Version: 2021-07-20
 
 # Parameters:
 # --input=<directory>
@@ -11,9 +11,8 @@
 #     [
 #       {
 #         "Conversation_no": <number>,
-#         "Turn_no": X,
-#         "Context": [ "<question1>", "<answer-to-question1>", ... "<questionX-1>", "<answer-to-questionX-1>" ],
-#         "Question": "<questionX>"
+#         "Turn_no": <number>,
+#         "Question": "<question>"
 #       }, ...
 #     ]
 #
@@ -23,12 +22,12 @@
 #     [
 #       {
 #         "Conversation_no": <number>,
-#         "Turn_no": X,
-#         "Model_rewrite": "<questionX>",
+#         "Turn_no": <number>,
+#         "Model_rewrite": "<question>",
 #         "Model_passages": { 
 #           "<id-of-a-relevant-passage>": <score>, ...
 #         },
-#         "Model_answer": "<sentence-in-passages-with-highest-term-overlap-with-questionX>"
+#         "Model_answer": "<sentence-in-passages-with-highest-term-overlap-with-question>"
 #       }, ...
 #     ]
 #
@@ -79,15 +78,15 @@ def parse_options():
 
     return options
 
+
 # STEP 1: QUESTION REWRITING
 
-def rewrite(turn):
-    if len(turn["Context"]) == 0:
-        # Do not rewrite if there is no previous question (copy for your approach)
-        return turn["Question"]
-    else:
-        # This baseline does actually never rewrite (change for your approach)
-        return turn["Question"]
+# turn: Deserialized JSON of current turn
+# conversation: List of previous turns in the same conversation
+def rewrite(turn, conversation):
+    # This baseline does actually never rewrite
+    return turn["Question"]
+
 
 # STEP 2: PASSAGE RETRIEVAL
 
@@ -96,12 +95,20 @@ def load_searcher(index_directory):
     searcher.set_bm25(0.82, 0.68) # from paper
     return searcher
 
+# turn: Deserialized JSON of current turn
+# rewritten_question: Output of the question rewriting step
+# searcher: Anserini searcher on the passage collection
+# num_passages: Expected number of passages to retrieve
 def retrieve(turn, rewritten_question, searcher, num_passages):
     hits = searcher.search(rewritten_question, k = num_passages)
     return [{"id": hit.docid, "score": hit.score, "text": json.loads(hit.raw)["contents"]} for hit in hits]
 
+
 # STEP 3: QUESTION ANSWERING
 
+# turn: Deserialized JSON of current turn
+# rewritten_question: Output of the question rewriting step
+# retrieved_passages: Output of the passage retrieval step
 def answer(turn, rewritten_question, retrieved_passages):
     # Take the first of the sentences that contains the most noun phrases of the question
     question_blob = TextBlob(rewritten_question)
@@ -122,13 +129,13 @@ def answer(turn, rewritten_question, retrieved_passages):
 
 # RUN
 
-def run_for_turn(turn, searcher, num_passages):
-    rewritten_question = rewrite(turn)
+def run_for_turn(turn, conversation, searcher, num_passages):
+    rewritten_question = rewrite(turn, conversation)
     retrieved_passages = retrieve(turn, rewritten_question, searcher, num_passages)
     retrieved_passages.sort(reverse = True, key = lambda passage: passage["score"])
     question_answer = answer(turn, rewritten_question, retrieved_passages)
     result = {
-        "Model_rewrite": rewritten_question, # remove unless you actually perform rewriting
+        "Model_rewrite": rewritten_question, # remove if you don't rewrite
         "Model_passages": {passage["id"]: passage["score"] for passage in retrieved_passages},
         "Model_answer": question_answer,
         "Conversation_no": turn["Conversation_no"],
@@ -137,7 +144,16 @@ def run_for_turn(turn, searcher, num_passages):
     return result
 
 def run(turns, searcher, num_passages):
-    return [run_for_turn(turn, searcher, num_passages) for turn in tqdm(turns)]
+    results = []
+    conversation = []
+    conversation_no = -1
+    for turn in tqdm(turns):
+        if turn["Conversation_no"] != conversation_no:
+            conversation_no = turn["Conversation_no"]
+            conversation = []
+        results.append(run_for_turn(turn, conversation, searcher, num_passages))
+        conversation.append(turn)
+    return results
 
 # MAIN
 
