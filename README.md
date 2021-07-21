@@ -1,5 +1,5 @@
 # SCAI-QReCC-21
-[[leaderboard](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15)] [[registration](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link)] [[forum](https://www.tira.io/c/scai/)] [[contact](mailto:scai-qrecc@googlegroups.com)] [[SCAI](https://scai.info/)]
+[[leaderboard](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-07-20/)] [[registration](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link)] [[forum](https://www.tira.io/c/scai/)] [[contact](mailto:scai-qrecc@googlegroups.com)] [[SCAI](https://scai.info/)]
 
 Answer a series of contextually-dependent questions like they may occur in natural human-to-human conversations.
 
@@ -31,7 +31,7 @@ Upon request, we will provide input files and additional leaderboards for system
 ## Submission
 Register for the task using [this form](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link). We will then send you your TIRA login once it is ready.
 
-The challenge is hosted on [TIRA](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15). Participants are encouraged to upload their code and run the evaluation on the VMs provided by the platform to ensure reproducibility of the results. It is also possible to upload the submission as a single JSON file.
+The challenge is hosted on [TIRA](https://www.tira.io/task/scai-qrecc/). Participants are encouraged to upload their code and run the evaluation on the VMs provided by the platform to ensure reproducibility of the results. It is also possible to upload the submission as a single JSON file.
 
 The submission format for the task is a JSON file similar to the input (all `Model_xxx`-fields are optional and you can omit them from the submission, e.g. provide only Conversation_no, Turn_no and Model_answer to get the EM and F1 scores for the generated answers):
 ```
@@ -62,7 +62,7 @@ Install your software to your VM. Then go to the TIRA web interface and click "A
 
 IMPORTANT: To ensure reproducibility, create a "Software" in the TIRA web interface for each parameter setting that you consider a submission to the challenge.
 
-Click on "Run" to execute your software for the selected input dataset. Your VM will not be accessible while your system is running, be detached from the internet (to ensure your software is fully installed in your virtual machine), and afterwards restored to the state before the run. Since the test set is rather large (the simple baseline takes nearly 11 hours to complete), we highly recommend you first test your software on the `scai-qrecc21-toy-dataset-2021-05-15` input dataset. This dataset contains the first conversation (12 turns/questions) only.
+Click on "Run" to execute your software for the selected input dataset. Your VM will not be accessible while your system is running, be detached from the internet (to ensure your software is fully installed in your virtual machine), and afterwards restored to the state before the run. Since the test set is rather large (the simple baseline takes nearly 11 hours to complete), we highly recommend you first test your software on the `scai-qrecc21-toy-dataset-2021-07-20` input dataset. This dataset contains the first conversation (6 turns/questions) only. For the test-dataset, send us a mail at [scai-qrecc@googlegroups.com](mailto:scai-qrecc@googlegroups.com) so that we unblind your results.
 
 ![TIRA Interface: VM status and submission](img/tira-software-submission.png)
 
