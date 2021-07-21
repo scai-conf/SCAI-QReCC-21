@@ -31,5 +31,5 @@ test:
 
 
 k8s-deploy:
-	kubectl -n webisservices apply -f k8s-tira-flask-file-upload.yaml
+	kubectl -n webisservices apply -f ~/workspace/code-admin-knowledge-base/services/tira/k8s-tira-flask-file-upload.yaml
 
