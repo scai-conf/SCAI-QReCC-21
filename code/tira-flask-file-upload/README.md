@@ -4,6 +4,12 @@
 
 Run tests with: `make test`
 
+## How to add new datasets
+
+- Add the dataset as option to the "dataset selection" in `templates/run-file-upload.html`
+- Add the dataset to the list of allowed datasets in app.py
+- Mount the dataset path in the pod: the associated yaml is in [the webis-internal git](https://git.webis.de/code-generic/code-admin-knowledge-base/-/blob/master/services/tira/k8s-tira-flask-file-upload.yaml)
+
 ## How to manualy upload a file
 
 - In [app.py](app.py) manipulate the method `vm_name` to always return your `"<VM-NAME>"`

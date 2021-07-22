@@ -1,19 +1,15 @@
 #!/usr/bin/env python3
 
 """Calculates the measures for the SCAI QReCC 21 challenge"""
-# Version: 2021-05-17
+# Version: 2021-07-20
 
 # Parameters:
 # --input-dataset=<directory>
 #   Directory that contains the ground-truth.json:
 #   [
 #     {
-#       "Turns": {
-#         "model": {"Conversation_no": <number>, "Turn_no": <number>},
-#         "original": {"Conversation_no": <number>, "Turn_no": 1},
-#         "transformer": {"Conversation_no": <number>, "Turn_no": 1},
-#         "human": {"Conversation_no": <number>, "Turn_no": 1}
-#       },
+#       "Conversation_no": <number>,
+#       "Turn_no": <number>,
 #       "Truth_rewrite": "<rewrite-of-question>",
 #       "Truth_passages": [ "<id-of-a-relevant-passage>", ... ],
 #       "Truth_answer": "<answer-to-question>"
@@ -36,9 +32,6 @@
 #
 # --output=<directory>
 #   Directory to which the evaluation will be written. Will be created if it does not exist.
-#
-# --eval-question-types
-#   Also evaluate retrieval and answering for SCAI QReCC'21 standard question rewrites (no rewrite/original, transformer, human) instead of the ones done by the model
 #
 # --eval-missing-truth
 #   Also evaluate turns with missing ground truth (i.e., no relevant passages, no answer) like in the paper.
@@ -77,7 +70,6 @@ question_types_model_only = ["model"]
 def parse_options():
     options = {
         "digits": 3,
-        "eval-question-types": False,
         "eval-missing-truth": False,
         "eval-turn-one-rewrites": False,
         "rewriting": True,
@@ -86,7 +78,7 @@ def parse_options():
     }
 
     try:
-        long_options = ["input-dataset=", "input-run=", "output=", "eval-question-types", "eval-missing-truth", "eval-turn-one-rewrites", "no-rewriting", "no-retrieval", "no-answering"]
+        long_options = ["input-dataset=", "input-run=", "output=", "eval-missing-truth", "eval-turn-one-rewrites", "no-rewriting", "no-retrieval", "no-answering"]
         opts, _ = getopt.getopt(sys.argv[1:], "", long_options)
     except getopt.GetoptError as err:
         print(str(err))
@@ -143,15 +135,6 @@ def load_run(input_run_file):
 def get_turn_id(turn):
     return "%d_%d" % (turn["Conversation_no"], turn["Turn_no"])
 
-def get_ground_truth_turn_id(turn, question_type):
-    return get_turn_id(turn["Turns"][question_type])
-
-def get_metric_name(base_name, question_type):
-    if question_type == "model":
-        return base_name
-    else:
-        return base_name + " " + question_type
-
 # STEP 1: QUESTION REWRITING
 
 def get_rewriting_run(run):
@@ -175,9 +158,9 @@ def evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewr
     metric = load_metric("rouge")
     rewrites = 0
     for turn in tqdm(ground_truth):
-        if eval_turn_one_rewrites or turn["Turns"]["model"]["Turn_no"] > 1:
+        if eval_turn_one_rewrites or turn["Turn_no"] > 1:
             if eval_missing_truth or turn["Truth_rewrite"] != "":
-                turn_id = get_ground_truth_turn_id(turn, "model")
+                turn_id = get_turn_id(turn)
                 reference = turn["Truth_rewrite"]
                 prediction = ""
                 if turn_id in rewriting_run:
@@ -205,32 +188,30 @@ def get_retrieval_run(run):
             retrieval_run[turn_id] = turn["Model_passages"]
     return retrieval_run
 
-def get_retrieval_ground_truth(ground_truth, question_type, eval_missing_truth):
+def get_retrieval_ground_truth(ground_truth, eval_missing_truth):
     retrieval_ground_truth = {}
     for turn in ground_truth:
-        turn_id = get_ground_truth_turn_id(turn, question_type)
+        turn_id = get_turn_id(turn)
         if "Truth_passages" in turn and len(turn["Truth_passages"]) > 0:
             retrieval_ground_truth[turn_id] = {passage:1 for passage in turn["Truth_passages"]}
         elif eval_missing_truth: # paper version
             retrieval_ground_truth[turn_id] = {"":1}
     return retrieval_ground_truth
 
-def evaluate_retrieval(ground_truth, run, eval_missing_truth, question_types):
+def evaluate_retrieval(ground_truth, run, eval_missing_truth):
     print("Evaluate: Passage Retrieval")
     result = {}
     retrieval_run = get_retrieval_run(run)
-    for question_type in question_types:
-        print("  " + question_type)
-        retrieval_ground_truth_for_type = get_retrieval_ground_truth(ground_truth, question_type, eval_missing_truth)
-        retrieval_run_for_type = {turn_id:passages for (turn_id, passages) in retrieval_run.items() if turn_id in retrieval_ground_truth_for_type}
-        if retrieval_run_for_type: # at least one turn for this type => evaluate
-            metric = pytrec_eval.RelevanceEvaluator(retrieval_ground_truth_for_type, {'recip_rank'})
-            mrrs = [score["recip_rank"] for score in metric.evaluate(retrieval_run_for_type).values()]
-            average_mrr = sum(mrrs) / len(mrrs)
-            result[get_metric_name("MRR", question_type)] = average_mrr
-            print("    used retrieved passages for %d questions" % len(retrieval_run_for_type))
-        else:
-            print("    skipped for no retrieved passages")
+    retrieval_ground_truth_for_type = get_retrieval_ground_truth(ground_truth, eval_missing_truth)
+    retrieval_run_for_type = {turn_id:passages for (turn_id, passages) in retrieval_run.items() if turn_id in retrieval_ground_truth_for_type}
+    if retrieval_run_for_type: # at least one turn for this type => evaluate
+        metric = pytrec_eval.RelevanceEvaluator(retrieval_ground_truth_for_type, {'recip_rank'})
+        mrrs = [score["recip_rank"] for score in metric.evaluate(retrieval_run_for_type).values()]
+        average_mrr = sum(mrrs) / len(mrrs)
+        result["MRR"] = average_mrr
+        print("    used retrieved passages for %d questions" % len(retrieval_run_for_type))
+    else:
+        print("    skipped for no retrieved passages")
     return result
 
 # STEP 3: QUESTION ANSWERING
@@ -245,37 +226,35 @@ def get_answering_run(run):
                 answering_run[turn_id] = answer
     return answering_run
 
-def evaluate_answering(ground_truth, run, eval_missing_truth, question_types):
+def evaluate_answering(ground_truth, run, eval_missing_truth):
     print("Evaluate: Question Answering")
     result = {}
     answering_run = get_answering_run(run)
-    for question_type in question_types:
-        print("  " + question_type)
-        metric = load_metric("squad_v2")
-        answers = 0
-        for turn in tqdm(ground_truth, desc = "  "):
-            turn_id = get_ground_truth_turn_id(turn, question_type)
-            if eval_missing_truth or turn["Truth_answer"] != "":
-                reference = {
-                        "id": turn_id,
-                        "answers": {'answer_start': [0], 'text': [turn["Truth_answer"]]}
-                    }
-                prediction = {
-                        "id": turn_id,
-                        "prediction_text": "",
-                        'no_answer_probability': 0.
-                    }
-                if turn_id in answering_run:
-                    prediction["prediction_text"] = answering_run[turn_id]
-                    answers = answers + 1
-                metric.add(prediction = prediction, reference = reference)
-        if answers > 0:
-            score = metric.compute()
-            result[get_metric_name("Exact match", question_type)] = score['exact'] / 100
-            result[get_metric_name("F1", question_type)] = score['f1'] / 100
-            print("    used %d answers" % answers)
-        else:
-            print("    skipped for no answers")
+    metric = load_metric("squad_v2")
+    answers = 0
+    for turn in tqdm(ground_truth, desc = "  "):
+        turn_id = get_turn_id(turn)
+        if eval_missing_truth or turn["Truth_answer"] != "":
+            reference = {
+                    "id": turn_id,
+                    "answers": {'answer_start': [0], 'text': [turn["Truth_answer"]]}
+                }
+            prediction = {
+                    "id": turn_id,
+                    "prediction_text": "",
+                    'no_answer_probability': 0.
+                }
+            if turn_id in answering_run:
+                prediction["prediction_text"] = answering_run[turn_id]
+                answers = answers + 1
+            metric.add(prediction = prediction, reference = reference)
+    if answers > 0:
+        score = metric.compute()
+        result["Exact match"] = score['exact'] / 100
+        result["F1"] = score['f1'] / 100
+        print("    used %d answers" % answers)
+    else:
+        print("    skipped for no answers")
     return result
 
 # EVALUATE
@@ -286,21 +265,14 @@ def has_model_rewrites(run):
             return True
     return False
 
-def evaluate(ground_truth, run, eval_question_types = False, eval_missing_truth = False, eval_turn_one_rewrites = False, rewriting = True, retrieval = True, answering = True):
-    question_types = question_types_model_only
-    if eval_question_types:
-        if has_model_rewrites(run):
-            question_types = question_types_all
-        else:
-            question_types = question_types_no_model
-
+def evaluate(ground_truth, run, eval_missing_truth = False, eval_turn_one_rewrites = False, rewriting = True, retrieval = True, answering = True):
     results = {}
     if rewriting:
         results.update(evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewrites))
     if retrieval:
-        results.update(evaluate_retrieval(ground_truth, run, eval_missing_truth, question_types))
+        results.update(evaluate_retrieval(ground_truth, run, eval_missing_truth))
     if answering:
-        results.update(evaluate_answering(ground_truth, run, eval_missing_truth, question_types))
+        results.update(evaluate_answering(ground_truth, run, eval_missing_truth))
     return results
 
 # MAIN
@@ -314,7 +286,6 @@ def main(options):
     results = evaluate(
             ground_truth = options["ground-truth"],
             run = options["run"],
-            eval_question_types = options["eval-question-types"],
             eval_missing_truth = options["eval-missing-truth"],
             eval_turn_one_rewrites = options["eval-turn-one-rewrites"],
             rewriting = options["rewriting"],

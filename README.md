@@ -1,5 +1,5 @@
 # SCAI-QReCC-21
-[[leaderboard](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15)] [[registration](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link)] [[forum](https://www.tira.io/c/scai/)] [[contact](mailto:scai-qrecc@googlegroups.com)] [[SCAI](https://scai.info/)]
+[[leaderboard](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-07-20/)] [[registration](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link)] [[forum](https://www.tira.io/c/scai/)] [[contact](mailto:scai-qrecc@googlegroups.com)] [[SCAI](https://scai.info/)]
 
 Answer a series of contextually-dependent questions like they may occur in natural human-to-human conversations.
 
@@ -9,9 +9,9 @@ Answer a series of contextually-dependent questions like they may occur in natur
 
 
 ## Data
-[[questions](https://zenodo.org/record/4772532/files/scai-qrecc21-questions.json?download=1)] [[passages](https://zenodo.org/record/4772532/files/passages.zip?download=1)] [[Zenodo](https://doi.org/10.5281/zenodo.4748782)]
+[[questions](https://zenodo.org/record/4772532/files/scai-qrecc21-questions.json?download=1)] [[passages](https://zenodo.org/record/4772532/files/passages.zip?download=1)] [[Zenodo](https://doi.org/10.5281/zenodo.4748782)] [[original](https://github.com/apple/ml-qrecc)]
 
-The passage collection is 27.5GB!
+The passage collection is 27.5GB with 54M passages!
 
 The input format for the task (questions) is a JSON file:
 ```
@@ -19,20 +19,19 @@ The input format for the task (questions) is a JSON file:
   {
     "Conversation_no": <number>,
     "Turn_no": X,
-    "Context": [ "<question1>", "<answer-to-question1>", ... "<questionX-1>", "<answer-to-questionX-1>" ],
     "Question": "<questionX>"
   }, ...
 ]
 ```
 With `X` being the number of the question in the conversation. Questions with the same `Conversation_no` are from the same conversation.
 
-Upon request, we will provide question files and submission possibilities for systems that address not all three steps.
+Upon request, we will provide input files and additional leaderboards for systems that address the subtasks of passage retrieval, answer generation and question reformulation separately.
 
 
 ## Submission
 Register for the task using [this form](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link). We will then send you your TIRA login once it is ready.
 
-The challenge is hosted on [TIRA](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-05-15). Participants are encouraged to upload their code and run the evaluation on the VMs provided by the platform to ensure reproducibility of the results. It is also possible to upload the submission as a single JSON file.
+The challenge is hosted on [TIRA](https://www.tira.io/task/scai-qrecc/). Participants are encouraged to upload their code and run the evaluation on the VMs provided by the platform to ensure reproducibility of the results. It is also possible to upload the submission as a single JSON file.
 
 The submission format for the task is a JSON file similar to the input (all `Model_xxx`-fields are optional and you can omit them from the submission, e.g. provide only Conversation_no, Turn_no and Model_answer to get the EM and F1 scores for the generated answers):
 ```
@@ -63,7 +62,7 @@ Install your software to your VM. Then go to the TIRA web interface and click "A
 
 IMPORTANT: To ensure reproducibility, create a "Software" in the TIRA web interface for each parameter setting that you consider a submission to the challenge.
 
-Click on "Run" to execute your software for the selected input dataset. Your VM will not be accessible while your system is running, be detached from the internet (to ensure your software is fully installed in your virtual machine), and afterwards restored to the state before the run. Since the test set is rather large (the simple baseline takes nearly 11 hours to complete), we highly recommend you first test your software on the `scai-qrecc21-toy-dataset-2021-05-15` input dataset. This dataset contains the first conversation (12 turns/questions) only.
+Click on "Run" to execute your software for the selected input dataset. Your VM will not be accessible while your system is running, be detached from the internet (to ensure your software is fully installed in your virtual machine), and afterwards restored to the state before the run. Since the test set is rather large (the simple baseline takes nearly 11 hours to complete), we highly recommend you first test your software on the `scai-qrecc21-toy-dataset-2021-07-20` input dataset. This dataset contains the first conversation (6 turns/questions) only. For the test-dataset, send us a mail at [scai-qrecc@googlegroups.com](mailto:scai-qrecc@googlegroups.com) so that we unblind your results.
 
 ![TIRA Interface: VM status and submission](img/tira-software-submission.png)
 
@@ -72,7 +71,8 @@ Then go to the "Runs" section below and click on the blue (i)-icon of the softwa
 NOTE: By submitting your software you retain full copyrights. You agree to grant us usage rights for evaluation of the corresponding data generated by your software. We agree not to share your software with a third party or use it for any purpose other than research.
 
 ### Run Submission
-Coming soon
+
+You can upload a JSON file as a submission at [https://www.tira.io/run-upload-scai-qrecc21](https://www.tira.io/run-upload-scai-qrecc21). After a successful upload, the page will redirect you to the overview of all your submissions. At the "Runs" section, you can click on the blue (i)-icon to double-check your upload. You can also download the run from there.
 
 
 ## Evaluation
@@ -108,20 +108,25 @@ Some useful links to get you started on a new conversational open-domain QA syst
 
 #### Conversational Passage Retrieval
 
+  - [ConvDR](https://github.com/thunlp/ConvDR)
+  - [CQE](https://arxiv.org/pdf/2104.08707.pdf)
   - [Chatty Goose](https://github.com/castorini/chatty-goose)
 
 #### Answer Generation
 
+  - [RAG](https://huggingface.co/transformers/model_doc/rag.html)
   - [BART](https://huggingface.co/facebook/bart-large)
   - [ELECTRA](https://huggingface.co/google/electra-large-generator)
 
-#### Dense Passage Retrieval (DPR)
+#### Passage Retrieval
 
+  - [BEIR](https://github.com/UKPLab/beir)
   - [Haystack](https://colab.research.google.com/github/deepset-ai/haystack/blob/master/tutorials/Tutorial6_Better_Retrieval_via_DPR.ipynb)
   - [BPR](https://github.com/studio-ousia/bpr)
   - [ColBERT](https://github.com/stanford-futuredata/ColBERT)
+  - [docTTTTTquery](https://github.com/castorini/docTTTTTquery)
 
-#### Question Reformulation (QR)
+#### Conversational Question Reformulation
 
   - [QuReTeC](https://github.com/nickvosk/sigir2020-query-resolution)
   - [BART-FC](https://github.com/aquaktus/CAsT_BART_query_rewriting)
