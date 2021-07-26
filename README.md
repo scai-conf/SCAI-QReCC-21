@@ -1,5 +1,5 @@
 # SCAI-QReCC-21
-[[leaderboard](https://www.tira.io/task/scai-qrecc/dataset/scai-qrecc21-test-dataset-2021-07-20/)] [[registration](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link)] [[forum](https://www.tira.io/c/scai/)] [[contact](mailto:scai-qrecc@googlegroups.com)] [[SCAI](https://scai.info/)]
+[[leaderboards](https://www.tira.io/task/scai-qrecc/)] [[registration](https://docs.google.com/forms/d/e/1FAIpQLSem7NXwDSgv2SLJrXhuHPxGifOOyzqewcu41hTIV3ywqRcr_A/viewform?usp=sf_link)] [[forum](https://www.tira.io/c/scai/)] [[contact](mailto:scai-qrecc@googlegroups.com)] [[SCAI](https://scai.info/)]
 
 Answer a series of contextually-dependent questions like they may occur in natural human-to-human conversations.
 
@@ -9,11 +9,13 @@ Answer a series of contextually-dependent questions like they may occur in natur
 
 
 ## Data
-[[questions](https://zenodo.org/record/4772532/files/scai-qrecc21-questions.json?download=1)] [[passages](https://zenodo.org/record/4772532/files/passages.zip?download=1)] [[Zenodo](https://doi.org/10.5281/zenodo.4748782)] [[original](https://github.com/apple/ml-qrecc)]
+[[Zenodo](https://doi.org/10.5281/zenodo.4748782)] [[original](https://github.com/apple/ml-qrecc)]
 
-The passage collection is 27.5GB with 54M passages!
+File names here refer to the respective files hosted on [[Zenodo](https://doi.org/10.5281/zenodo.4748782)].
 
-The input format for the task (questions) is a JSON file:
+The passage collection (`passages.zip`) is 27.5GB with 54M passages!
+
+The input format for the task (`scai-qrecc21-[toy,training,test]-questions[,-rewritten].json`) is a JSON file:
 ```
 [
   {
@@ -25,7 +27,7 @@ The input format for the task (questions) is a JSON file:
 ```
 With `X` being the number of the question in the conversation. Questions with the same `Conversation_no` are from the same conversation.
 
-Upon request, we will provide input files and additional leaderboards for systems that address the subtasks of passage retrieval, answer generation and question reformulation separately.
+The `questions-rewritten.json`-files contain human rewritten questions that can be used by systems that do not want to participate in question rewriting.
 
 
 ## Submission
@@ -47,7 +49,7 @@ The submission format for the task is a JSON file similar to the input (all `Mod
   }, ...
 ]
 ```
-Example: [QReCC paper (NAACL) baseline](https://zenodo.org/record/4772532/files/scai-qrecc21-naacl-baseline.zip?download=1)
+Example: `scai-qrecc21-naacl-baseline.zip`
 
 You can use the [code of our simple baseline](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline) to get started.
 
@@ -93,7 +95,7 @@ We use the same metrics as the [QReCC paper](https://arxiv.org/abs/2010.04898), 
 ### Baselines
 We provide the following baselines for comparison:
   - **scai-qrecc21-simple-baseline**: BM25 baseline for passage retrieval using original conversational questions without rewriting. We recommend to use [this code](https://github.com/scai-conf/SCAI-QReCC-21/tree/main/code/simple-baseline) as a boilerplate to kickstart your own submission using the VM.
-  - **scai-qrecc21-naacl-baseline**: results for the end-to-end approach using supervised question rewriting and QA models reported in the [QReCC paper](https://arxiv.org/abs/2010.04898) (accepted at NAACL'21). This sample run is available [here](https://zenodo.org/record/4772532/files/scai-qrecc21-naacl-baseline.zip?download=1).
+  - **scai-qrecc21-naacl-baseline**: results for the end-to-end approach using supervised question rewriting and QA models reported in the [QReCC paper](https://arxiv.org/abs/2010.04898) (accepted at NAACL'21). This sample run is available [on Zenodo as scai-qrecc21-naacl-baseline.zip](https://doi.org/10.5281/zenodo.4748782).
   
 Note that the baseline results differ from the ones reported in the paper since we made several corrections to the evaluation script and the ground truth annotations:
 
