@@ -30,3 +30,5 @@ tira k8s tira vm-create -r betaweb113.medien.uni-weimar.de tira-ubuntu-20-04-des
 tira k8s tira vm-create -r betaweb115.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova ultron
 tira k8s tira vm-create -r betaweb116.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova tars
 tira k8s tira vm-create -r betaweb117.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova torch
+tira k8s tira vm-create -r betaweb118.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova armstrong
+tira k8s tira vm-create -r betaweb119.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova rachael
