@@ -6,36 +6,20 @@
 </head>
 <body>
 <!-- MTURK START -->
+<style>
+.todo {
+  background: #f8d7da;
+}
+</style>
 <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
 <crowd-form answer-format="flatten-objects">
 <!-- CUSTOM START -->
 
-<crowd-instructions link-text="View instructions" link-type="button">
-<short-summary>
-<p>Provide a brief instruction here</p>
-</short-summary>
-
-<detailed-instructions>
-<h3>Provide more detailed instructions here</h3>
-<p>Include additional information</p>
-</detailed-instructions>
-
-<positive-example>
-<p>Provide an example of a good answer here</p>
-<p>Explain why it's a good answer</p>
-</positive-example>
-
-<negative-example>
-<p>Provide an example of a bad answer here</p>
-<p>Explain why it's a bad answer</p>
-</negative-example>
-</crowd-instructions>
-
 <h3>Read the question and both answers carefully</h3>
 <div><p>
-<label><b>Question</b>:</label> How much space do cattle need?<br><br>
-<label><b>Answer 1</b>:</label> Barn space for a cow that weighs 1,000 to 1,300 lb is 20 to 30 square feet, and the cattle have access to a lot. If the cattle do not have access to a lot that is adjacent to the barn, then the space requirement is 35 to 50 square feet per cow.<br><br>
-<label><b>Answer 2</b>:</label> Barn space for a cow that weighs 1,000 to 1,300 lb is 20 to 30 square feet, and the cattle
+<label><b>Question</b>:</label> ${question}<br><br>
+<label><b>Answer 1</b>:</label> ${groundtruth}<br><br>
+<label><b>Answer 2</b>:</label> ${prediction} 
 </p></div>
 
 <h3>Select for each statement whether you agree or disagree with it</h3>
@@ -91,7 +75,7 @@
 
 <tr>
 <td>
-<b>Answer 1</b> is easier to understand than <b>Answer 2</b>.
+<b>Answer 2</b> is harder to understand than <b>Answer 1</b>.
 </td>
 <td>
 <crowd-radio-group>
@@ -109,6 +93,30 @@
 
 <!-- CUSTOM END -->
 </crowd-form>
+<script>
+function validateForm(markTodos = false) {
+  // radio buttons
+  const radioGroups = document.querySelectorAll("crowd-radio-group");
+  for (let r = 0; r < radioGroups.length; ++r) {
+    const radioGroup = radioGroups[r];
+    const hasChecked = (radioGroup.querySelector("[checked]") !== null);
+    if (hasChecked) {
+      radioGroup.classList.remove("todo");
+    } else if (markTodos === true) {
+      radioGroup.classList.add("todo");
+    }
+  }
+
+  const noTodoLeft = (document.querySelector(".todo") === null);
+  return noTodoLeft;
+}
+
+document.addEventListener("change", validateForm);
+
+document.querySelector('crowd-form').onsubmit = function(e) {
+  if (!validateForm(true)) { e.preventDefault(); }
+}
+</script>
 <!-- MTURK END -->
 </body>
 </html>
