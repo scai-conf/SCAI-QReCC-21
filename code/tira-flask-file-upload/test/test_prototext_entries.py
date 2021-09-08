@@ -8,5 +8,5 @@ def test_run_prototext():
 
 def test_run_software_1():
     current_time = datetime.strptime('Jun 1 2005  1:33PM', '%b %d %Y %I:%M%p')
-    verify(run_software(current_time, 'my-test-dataset-1', 23))
+    verify(run_software(current_time, 'my-test-dataset-1', 23, 'my-run-tag'))
 

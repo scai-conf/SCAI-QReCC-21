@@ -39,12 +39,12 @@ deleted: false
 taskId: "scai-qrecc"
 accessToken: "manual-run-no-access-token"'''
 
-def run_software(current_time, dataset, num):
+def run_software(current_time, dataset, num, run_name):
     current_time = current_time.strftime('%a %b %d %H:%M:%S UTC %Y')
     return '''softwares {
   id: "software''' + str(num) + '''"
   count: "''' + str(num) + '''"
-  command: "# This software documents a manual upload of a run file on ''' + current_time + '''"
+  command: "# This software documents a manual upload of a run file named ''' + run_name + ''' on ''' + current_time + '''"
   workingDirectory: ""
   dataset: "''' + dataset + '''"
   run: "none"
@@ -54,7 +54,7 @@ def run_software(current_time, dataset, num):
 }
 '''
 
-def build_run(data, vm, current_time, input_dataset):
+def build_run(data, vm, current_time, input_dataset, run_name):
     from subprocess import check_output
     import os
     
@@ -75,7 +75,10 @@ def build_run(data, vm, current_time, input_dataset):
         f.write(file_list)
 
     with open(os.path.join('/mnt/ceph/tira/model/softwares/scai-qrecc/', vm, 'softwares.prototext'), 'a+') as f:
-        f.write('\n\n' + run_software(current_time, input_dataset, next_software_num(vm)))
+        f.write('\n\n' + run_software(current_time, input_dataset, next_software_num(vm)), run_name)
+
+    with open(os.path.join(run_dir, 'stdout.txt'), 'wb') as f:
+        f.write('This software was not executed in TIRA and documents a manual upload of a run file named "' + run_name + '" on ' + current_time + '.\n')
 
     with open(os.path.join(run_dir, 'size.txt'), 'wb') as f:
         f.write(check_output(['bash', '-c', '(du -sb "' + run_dir + '" && du -hs "' +  run_dir + '") | cut -f1']))
