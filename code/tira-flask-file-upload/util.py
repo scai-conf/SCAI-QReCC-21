@@ -78,7 +78,7 @@ def build_run(data, vm, current_time, input_dataset, run_name):
         f.write('\n\n' + run_software(current_time, input_dataset, next_software_num(vm), run_name))
 
     with open(os.path.join(run_dir, 'stdout.txt'), 'wb') as f:
-        f.write('This software was not executed in TIRA and documents a manual upload of a run file named "' + run_name + '" on ' + current_time + '.\n')
+        f.write('This software was not executed in TIRA and documents a manual upload of a run file named "' + run_name + '" on ' + current_time.strftime('%a %b %d %H:%M:%S UTC %Y') + '.\n')
 
     with open(os.path.join(run_dir, 'size.txt'), 'wb') as f:
         f.write(check_output(['bash', '-c', '(du -sb "' + run_dir + '" && du -hs "' +  run_dir + '") | cut -f1']))
