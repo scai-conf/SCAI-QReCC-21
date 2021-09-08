@@ -35,3 +35,4 @@ tira k8s tira vm-create -r betaweb118.medien.uni-weimar.de tira-ubuntu-20-04-des
 tira k8s tira vm-create -r betaweb119.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova rachael
 tira k8s tira vm-create -r betaweb120.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova clunk
 tira k8s tira vm-create -r betaweb121.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova attention
+tira k8s tira vm-create -r betaweb121.medien.uni-weimar.de tira-ubuntu-20-04-desktop-64bit.ova rali-qa
