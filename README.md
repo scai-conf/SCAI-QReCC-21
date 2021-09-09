@@ -3,7 +3,7 @@
 
 Answer a series of contextually-dependent questions like they may occur in natural human-to-human conversations.
 
-- Submission deadline: September 8, 2021
+- Submission deadline: <s>September 8, 2021</s> <b>Extended:</b> September 15, 2021
 - Results announcement: September 30, 2021
 - Workshop presentations: October 8, 2021
 
