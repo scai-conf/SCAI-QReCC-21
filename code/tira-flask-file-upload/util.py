@@ -54,9 +54,10 @@ def run_software(current_time, dataset, num, run_name):
 }
 '''
 
-def build_run(data, vm, current_time, input_dataset, run_name):
+def build_run(data, vm, current_time, input_dataset, run_name, run_description):
     from subprocess import check_output
     import os
+    import json
     
     out_dir = '/mnt/ceph/tira/data/runs/' + input_dataset
     run_dir = os.path.join(out_dir, vm, run_id(current_time))
@@ -78,7 +79,7 @@ def build_run(data, vm, current_time, input_dataset, run_name):
         f.write('\n\n' + run_software(current_time, input_dataset, next_software_num(vm), run_name))
 
     with open(os.path.join(run_dir, 'stdout.txt'), 'w') as f:
-        f.write('This software was not executed in TIRA and documents a manual upload of a run file named "' + run_name + '" on ' + current_time.strftime('%a %b %d %H:%M:%S UTC %Y') + '.\n')
+        f.write('This software was not executed in TIRA and documents a manual upload of a run file named "' + run_name + '" on ' + current_time.strftime('%a %b %d %H:%M:%S UTC %Y') + '.\n\n\n' + json.dumps({'run_name': run_name, 'run_description': run_description}))
 
     with open(os.path.join(run_dir, 'size.txt'), 'wb') as f:
         f.write(check_output(['bash', '-c', '(du -sb "' + run_dir + '" && du -hs "' +  run_dir + '") | cut -f1']))
