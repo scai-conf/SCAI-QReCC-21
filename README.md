@@ -74,7 +74,11 @@ NOTE: By submitting your software you retain full copyrights. You agree to grant
 
 ### Run Submission
 
-You can upload a JSON file as a submission at [https://www.tira.io/run-upload-scai-qrecc21](https://www.tira.io/run-upload-scai-qrecc21). After a successful upload, the page will redirect you to the overview of all your submissions. At the "Runs" section, you can click on the blue (i)-icon to double-check your upload. You can also download the run from there.
+You can upload a JSON file as a submission at [https://www.tira.io/run-upload-scai-qrecc21](https://www.tira.io/run-upload-scai-qrecc21).
+
+![TIRA Interface: VM status and submission](img/tira-run-file-upload.png)
+
+Please specify the name and a description of your run in the form. After a successful upload, the page will redirect you to the overview of all your submissions where you should [evaluate](#evaluation) your run to verify that your run is valid. At the "Runs" section, you can click on the blue (i)-icon to double-check your upload. You can also download the run from there.
 
 
 ## Evaluation
