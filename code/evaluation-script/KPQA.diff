@@ -1,0 +1,109 @@
+diff --git a/compute_KPQA.py b/compute_KPQA.py
+index 73eb206..fbc0648 100644
+--- a/compute_KPQA.py
++++ b/compute_KPQA.py
+@@ -70,7 +70,7 @@ if __name__ == "__main__":
+     config = AutoConfig.from_pretrained(os.path.join(PATH, 'config.json'))
+     tokenizer = AutoTokenizer.from_pretrained(PATH)
+     model = BertForTokenClassification.from_pretrained(PATH)    
+-    model = model.cuda()
++#    model = model.cuda()
+     
+     probs = kpw.get_kpw(model, hyps, refs, ques, is_q=is_q)        
+         
+diff --git a/kpqa_bertscore/bert_score/score.py b/kpqa_bertscore/bert_score/score.py
+index 043a156..73311b7 100644
+--- a/kpqa_bertscore/bert_score/score.py
++++ b/kpqa_bertscore/bert_score/score.py
+@@ -84,7 +84,7 @@ def score(cands, refs, model_type=None, num_layers=None, verbose=False,
+         tokenizer = AutoTokenizer.from_pretrained(model_type)
+ 
+     model = get_model(model_type, num_layers, all_layers)
+-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
++    device = 'cpu' #'cuda' if torch.cuda.is_available() else 'cpu'
+     model.to(device)
+ 
+     if not idf:
+@@ -187,7 +187,7 @@ def plot_example(candidate, reference, model_type=None, num_layers=None, lang=No
+     else:
+         tokenizer = AutoTokenizer.from_pretrained(model_type)
+     model = get_model(model_type, num_layers)
+-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
++    device = 'cpu' #'cuda' if torch.cuda.is_available() else 'cpu'
+     model.to(device)
+ 
+     idf_dict = defaultdict(lambda: 1.)
+diff --git a/kpqa_bertscore/bert_score/scorer.py b/kpqa_bertscore/bert_score/scorer.py
+index e983736..69b0d57 100644
+--- a/kpqa_bertscore/bert_score/scorer.py
++++ b/kpqa_bertscore/bert_score/scorer.py
+@@ -55,7 +55,7 @@ class BERTScorer:
+             assert lang is not None, 'Need to specify Language when rescaling with baseline'
+ 
+         if device is None:
+-            self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
++            self.device = 'cpu' # 'cuda' if torch.cuda.is_available() else 'cpu'
+         else:
+             self.device = device
+ 
+diff --git a/kpqa_bertscore/bert_score/utils.py b/kpqa_bertscore/bert_score/utils.py
+index e44b96e..7c424b6 100644
+--- a/kpqa_bertscore/bert_score/utils.py
++++ b/kpqa_bertscore/bert_score/utils.py
+@@ -194,7 +194,7 @@ def get_idf_dict(arr, tokenizer, nthreads=4):
+     return idf_dict
+ 
+ 
+-def collate_idf(arr, tokenizer, idf_dict, device='cuda:0'):
++def collate_idf(arr, tokenizer, idf_dict, device='cpu'):
+     """
+     Helper function that pads a list of sentences to hvae the same length and
+     loads idf score for words in the sentences.
+@@ -226,7 +226,7 @@ def collate_idf(arr, tokenizer, idf_dict, device='cuda:0'):
+ 
+ 
+ def get_bert_embedding(all_sens, model, tokenizer, idf_dict,
+-                       batch_size=-1, device='cuda:0', 
++                       batch_size=-1, device='cpu', 
+                        all_layers=False):
+     """
+     Compute BERT embedding in batches.
+@@ -344,7 +344,7 @@ def greedy_cos_idf(ref_embedding, ref_masks, ref_idf,
+     return P, R, F
+ 
+ def bert_cos_score_idf(model, refs, hyps, tokenizer, idf_dict, w_refs=None, w_hyps=None,
+-                       verbose=False, batch_size=64, device='cuda:0',
++                       verbose=False, batch_size=64, device='cpu',
+                        all_layers=False, stopwords=None):
+     """
+     Compute BERTScore.
+diff --git a/kpw.py b/kpw.py
+index fc2df36..fe9152c 100644
+--- a/kpw.py
++++ b/kpw.py
+@@ -44,7 +44,7 @@ def model_output(model, hyps, refs, ques, idx, stopwords=None, is_print=False, i
+             input_ids_enc = tokenizer.encode(input_sents)
+             input_ids = torch.tensor([input_ids_enc])
+             sep_idx = input_ids_enc.index(102)    
+-            input_ids = input_ids.cuda()
++            # input_ids = input_ids.cuda()
+             
+             seg_ids = torch.zeros_like(input_ids)
+             
+diff --git a/requirements.txt b/requirements.txt
+index 84f0b2f..4d66d36 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,5 +1,4 @@
+ transformers==2.8.0
+-torch==1.3.1
+ tqdm==4.36.1
+ stanfordcorenlp==3.9.1.1
+ spacy==2.1.9
+@@ -10,3 +9,6 @@ allennlp==0.9.0
+ pandas==1.1.5
+ more-itertools==8.8.0
+ scikit-image==0.17.2
++
++torch==1.4.0
++pyrouge==0.1.3
