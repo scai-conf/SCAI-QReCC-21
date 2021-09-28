@@ -67,5 +67,15 @@ jq -s '.[0] * .[1]' $tmp/kpqa-run.json $tmp/kpqa-truth.json \
     | @csv' \
   >> $tmp/kpqa.csv
 python3 $(dirname $0)/KPQA/compute_KPQA.py --data $tmp/kpqa.csv --model_path $(dirname $0)/KPQA/ckpt --out_file $tmp/kpqa-result.csv --num_ref 1
+tail -n +2 $tmp/kpqa-result.csv \
+  | awk -F, '{
+      BERTScore += $1
+      BLEUKPQA += $2
+      ROUGEKPQA += $3
+      BERTScoreKPQA += $4
+    } END {
+      printf "{\"BERTScore\":%.3f, \"BLEU-1-KPQA\":%.3f, \"ROUGE-L-KPQA\":%.3f, \"BERTScore-KPQA\":%.3f}\n", BERTScore/NR, BLEUKPQA/NR, ROUGEKPQA/NR, BERTScoreKPQA/NR
+    }' \
+  > $tmp/kpqa-result-averaged.json
 # rm -rf $tmp
 
