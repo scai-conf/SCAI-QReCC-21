@@ -34,6 +34,8 @@
 ground_truth_directory=$1
 run_directory=$2
 output_directory=$3
+shift 3
+other_params=$@
 
 ground_truth=$ground_truth_directory/ground-truth.json
 run=$run_directory/run.json
@@ -55,17 +57,15 @@ function reformat_kpqa_truth() {
     | jq -s add
 }
 
-function kpqa() {
-  mkdir -p $tmp
-  reformat_kpqa_run $run > $tmp/kpqa-run.json
-  reformat_kpqa_truth $ground_truth > $tmp/kpqa-truth.json
-  echo "question,answer,reference1" > $tmp/kpqa.csv
-  jq -s '.[0] * .[1]' $tmp/kpqa-run.json $tmp/kpqa-truth.json \
-    | jq -cr '.[] 
-      | [.Truth_rewrite, .Model_answer, .Truth_answer] 
-      | @csv' \
-    >> $tmp/kpqa.csv
-  python3 $(dirname $0)/KPQA/compute_KPQA.py --data $tmp/kpqa.csv --model_path $(dirname $0)/KPQA/ckpt --out_file $tmp/kpqa-result.csv --num_ref 1
-  # rm -rf $tmp
-}
+mkdir -p $tmp
+reformat_kpqa_run $run > $tmp/kpqa-run.json
+reformat_kpqa_truth $ground_truth > $tmp/kpqa-truth.json
+echo "question,answer,reference1" > $tmp/kpqa.csv
+jq -s '.[0] * .[1]' $tmp/kpqa-run.json $tmp/kpqa-truth.json \
+  | jq -cr '.[] 
+    | [.Truth_rewrite, .Model_answer, .Truth_answer] 
+    | @csv' \
+  >> $tmp/kpqa.csv
+python3 $(dirname $0)/KPQA/compute_KPQA.py --data $tmp/kpqa.csv --model_path $(dirname $0)/KPQA/ckpt --out_file $tmp/kpqa-result.csv --num_ref 1
+# rm -rf $tmp
 
