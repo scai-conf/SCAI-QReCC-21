@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<title>Annotation Interface</title>
+</head>
+<body>
+<!-- MTURK START -->
+<style>
+.todo {
+  background: #f8d7da;
+}
+main {
+  padding: 1em;
+  max-width: 800px;
+}
+</style>
+<script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+<crowd-form answer-format="flatten-objects">
+<main>
+<!-- CUSTOM START -->
+
+<style>
+.passage {
+  border: 1px solid gray;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+</style>
+
+<p>
+Assume someone asks you the following question:<br><br>
+<label><b>Question</b>:</label> ${question}<br><br>
+Select for each of the following texts from the web whether you would use any information contained in it.
+</p>
+
+<template id="passageTemplate">
+<p class="passage">
+<label><b>Text</b>:</label> <span class="passage-text"></span><br><br>
+My answer would use some information from this text:
+<crowd-radio-group>
+<crowd-radio-button name="relevant">Yes</crowd-radio-button>
+<crowd-radio-button name="irrelevant">No</crowd-radio-button>
+</crowd-radio-group>
+</p>
+</template>
+
+<div id="passages"></div>
+
+<script>
+// https://stackoverflow.com/a/12646864
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+if (!('content' in document.createElement('template'))) {
+  alert("Your browser is not supported. Please return this HIT.");
+} else {
+  const template = document.getElementById("passageTemplate");
+  const passagesNode = document.getElementById("passages");
+  const passageTexts = JSON.parse('${passages}');
+  let i = 0;
+  const passageTextIndices = passageTexts.map(passageText => i++);
+  shuffleArray(passageTextIndices);
+  for (i = 0; i < passageTextIndices.length; ++i) {
+    const passageTextIndex = passageTextIndices[i];
+    const passageText = passageTexts[passageTextIndex];
+    const clone = template.content.cloneNode(true);
+    clone.querySelector(".passage-text").textContent = passageText;
+    clone.querySelector("[name=relevant]").setAttribute("name", "relevant-" + (passageTextIndex + 1));
+    clone.querySelector("[name=irrelevant]").setAttribute("name", "irrelevant-" + (passageTextIndex + 1));
+    passagesNode.appendChild(clone);
+  }
+}
+</script>
+
+<div>
+<crowd-text-area name="comments" rows="4" placeholder="Comments (optional)"></crowd-text-area>
+</div>
+
+<!-- CUSTOM END -->
+</main>
+</crowd-form>
+<script>
+function validateForm(markTodos = false) {
+  // radio buttons
+  const radioGroups = document.querySelectorAll("crowd-radio-group");
+  for (let r = 0; r < radioGroups.length; ++r) {
+    const radioGroup = radioGroups[r];
+    const hasChecked = (radioGroup.querySelector("[checked]") !== null);
+    if (hasChecked) {
+      radioGroup.classList.remove("todo");
+    } else if (markTodos === true) {
+      radioGroup.classList.add("todo");
+    }
+  }
+
+  const noTodoLeft = (document.querySelector(".todo") === null);
+  return noTodoLeft;
+}
+
+document.addEventListener("change", validateForm);
+
+document.querySelector('crowd-form').onsubmit = function(e) {
+  if (!validateForm(true)) { e.preventDefault(); }
+}
+</script>
+<!-- MTURK END -->
+</body>
+</html>
