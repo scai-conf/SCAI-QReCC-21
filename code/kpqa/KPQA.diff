@@ -1,0 +1,17 @@
+diff --git a/requirements.txt b/requirements.txt
+index 84f0b2f..4d66d36 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,5 +1,4 @@
+ transformers==2.8.0
+-torch==1.3.1
+ tqdm==4.36.1
+ stanfordcorenlp==3.9.1.1
+ spacy==2.1.9
+@@ -10,3 +9,6 @@ allennlp==0.9.0
+ pandas==1.1.5
+ more-itertools==8.8.0
+ scikit-image==0.17.2
++
++torch==1.4.0
++pyrouge==0.1.3
