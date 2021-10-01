@@ -16,5 +16,6 @@ ADD ckpt.zip .
 RUN unzip ckpt.zip
 RUN pip3 install -r requirements.txt
 RUN python3 -m nltk.downloader stopwords
+RUN pip3 install torch==1.9.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html
 # RUN python3 compute_KPQA.py --model_path . --num_ref 1 --data sample.csv --out_file result-new.csv
-ENTRYPOINT python3 compute_KPQA.py --model_path . 
+
