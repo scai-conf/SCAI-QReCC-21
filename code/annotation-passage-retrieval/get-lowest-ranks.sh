@@ -1,6 +1,6 @@
 #!/bin/bash
   
-echo '"Conversation_no","Turn_no","Passage","Lowest_rank"'
+echo -e 'Conversation_no\tTurn_no\tPassage_url\tLowest_rank'
 for input in $@;do
   cat $input \
     | jq -cr '.[] 
@@ -25,8 +25,11 @@ for input in $@;do
       }'
 done \
   | awk -F, '{
-      key = $1","$2","$3
-      rank = $4
+      key = $1"\t"$2"\t"$3
+      for (k = 4; k < NF; ++k) {
+        key = key","$k
+      }
+      rank = $NF
       if (key in ranks) {
         if (ranks[key] > rank) {
           ranks[key] = rank
@@ -36,7 +39,6 @@ done \
       }
     } END {
       for (key in ranks) {
-        printf "%s,%d\n", key, ranks[key]
+        printf "%s\t%d\n", key, ranks[key]
       }
     }'
-
