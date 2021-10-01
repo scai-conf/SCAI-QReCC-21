@@ -13,4 +13,5 @@ index 84f0b2f..4d66d36 100644
  more-itertools==8.8.0
  scikit-image==0.17.2
 +
++
 +pyrouge==0.1.3
