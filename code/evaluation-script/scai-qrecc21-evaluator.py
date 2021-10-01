@@ -49,14 +49,17 @@
 #   Do no evaluate question answering, even if Model_answer fields exist in the run files.
 #
 #
-
-from datasets import load_metric
-from tqdm import tqdm
-import getopt
 import json
 import os
-import pytrec_eval
 import sys
+
+from tqdm import tqdm
+import getopt
+
+import pytrec_eval
+from datasets import load_metric
+from posscore import scorer
+
 
 # OPTIONS
 
@@ -228,30 +231,39 @@ def get_answering_run(run):
 
 def evaluate_answering(ground_truth, run, eval_missing_truth):
     print("Evaluate: Question Answering")
-    result = {}
+    
     answering_run = get_answering_run(run)
     metric = load_metric("squad_v2")
+    s = scorer.POSSCORE() # init POSSCORE
+
+    result = {}
     answers = 0
+
     for turn in tqdm(ground_truth, desc = "  "):
         turn_id = get_turn_id(turn)
+        posscores = []
         if eval_missing_truth or turn["Truth_answer"] != "":
             reference = {
                     "id": turn_id,
                     "answers": {'answer_start': [0], 'text': [turn["Truth_answer"]]}
                 }
+            prediction_text = ""
+            if turn_id in answering_run:
+                prediction_text = answering_run[turn_id]
+                prediction["prediction_text"] = prediction_text
+                answers = answers + 1
             prediction = {
                     "id": turn_id,
-                    "prediction_text": "",
+                    "prediction_text": prediction_text,
                     'no_answer_probability': 0.
                 }
-            if turn_id in answering_run:
-                prediction["prediction_text"] = answering_run[turn_id]
-                answers = answers + 1
             metric.add(prediction = prediction, reference = reference)
+            posscores.append(s.get_posscore(turn["Truth_answer"], prediction_text))
     if answers > 0:
         score = metric.compute()
         result["Exact match"] = score['exact'] / 100
         result["F1"] = score['f1'] / 100
+        result["POSSCORE"] = sum(posscores) / len(posscores)  # average POSSCORE
         print("    used %d answers" % answers)
     else:
         print("    skipped for no answers")
