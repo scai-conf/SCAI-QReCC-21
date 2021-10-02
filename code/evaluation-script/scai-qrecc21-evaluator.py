@@ -238,10 +238,9 @@ def evaluate_answering(ground_truth, run, eval_missing_truth):
 
     result = {}
     answers = 0
-
+    posscores = []
     for turn in tqdm(ground_truth, desc = "  "):
         turn_id = get_turn_id(turn)
-        posscores = []
         if eval_missing_truth or turn["Truth_answer"] != "":
             reference = {
                     "id": turn_id,
@@ -250,15 +249,15 @@ def evaluate_answering(ground_truth, run, eval_missing_truth):
             prediction_text = ""
             if turn_id in answering_run:
                 prediction_text = answering_run[turn_id]
-                prediction["prediction_text"] = prediction_text
                 answers = answers + 1
             prediction = {
                     "id": turn_id,
                     "prediction_text": prediction_text,
                     'no_answer_probability': 0.
                 }
-            metric.add(prediction = prediction, reference = reference)
-            posscores.append(s.get_posscore(turn["Truth_answer"], prediction_text))
+            metric.add(prediction=prediction, reference=reference)
+            ps = s.get_posscore(turn["Truth_answer"], prediction_text)
+            posscores.append(ps)
     if answers > 0:
         score = metric.compute()
         result["Exact match"] = score['exact'] / 100
