@@ -31,11 +31,20 @@ main {
 <p>
 Assume someone asks you the following question:<br><br>
 <label><b>Question</b>:</label> ${question}<br><br>
-Select for each of the following texts from the web whether you would use any information contained in it.
+Select for each of the following texts from the web whether you could use any information contained in the text to answer the question.
+<ul>
+<li>If the text is very incoherent or meaningless, select <b>No</b></li>
+<li>If the text is on a completely different topic, select <b>No</b></li>
+<li>If the text contains a single piece of information you could use, select <b>Yes</b></li>
+<li>If the text is a good answer by itself, select <b>Yes</b></li>
+</ul>
 </p>
+<input name="conversation" type="hidden" value="${conversation_no}">
+<input name="turn" type="hidden" value="${turn_no}">
 
 <template id="passageTemplate">
 <p class="passage">
+<label><b>Question</b>:</label> ${question}<br>
 <label><b>Text</b>:</label> <span class="passage-text"></span><br><br>
 My answer would use some information from this text:
 <crowd-radio-group>
@@ -61,7 +70,7 @@ if (!('content' in document.createElement('template'))) {
 } else {
   const template = document.getElementById("passageTemplate");
   const passagesNode = document.getElementById("passages");
-  const passageTexts = JSON.parse('${passages}');
+  const passageTexts = ${passages};
   let i = 0;
   const passageTextIndices = passageTexts.map(passageText => i++);
   shuffleArray(passageTextIndices);
