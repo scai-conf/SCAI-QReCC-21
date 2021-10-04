@@ -60,6 +60,8 @@ import pytrec_eval
 from datasets import load_metric
 from posscore import scorer
 
+from sas import semantic_answer_similarity
+
 
 # OPTIONS
 
@@ -174,7 +176,7 @@ def evaluate_rewriting(ground_truth, run, eval_missing_truth, eval_turn_one_rewr
     if rewrites > 0:
         score = metric.compute()
         print("  used %d rewrites" % rewrites)
-        return { "ROUGE1-R": score['rouge1'].mid.recall }
+        return { "QR": score['rouge1'].mid.recall }
     else:
         print("  skipped for no rewrites")
         return { }
@@ -234,7 +236,10 @@ def evaluate_answering(ground_truth, run, eval_missing_truth):
     
     answering_run = get_answering_run(run)
     metric = load_metric("squad_v2")
-    s = scorer.POSSCORE() # init POSSCORE
+    metric2 = load_metric("rouge")
+    # s = scorer.POSSCORE() # init POSSCORE
+    predictions = []
+    gts = []
 
     result = {}
     answers = 0
@@ -256,13 +261,20 @@ def evaluate_answering(ground_truth, run, eval_missing_truth):
                     'no_answer_probability': 0.
                 }
             metric.add(prediction=prediction, reference=reference)
-            ps = s.get_posscore(turn["Truth_answer"], prediction_text)
-            posscores.append(ps)
+            metric2.add(prediction = prediction_text, reference = turn["Truth_answer"])
+            predictions.append(prediction_text)
+            gts.append(turn["Truth_answer"])
+            # ps = s.get_posscore(turn["Truth_answer"], prediction_text)
+            # posscores.append(ps)
     if answers > 0:
         score = metric.compute()
-        result["Exact match"] = score['exact'] / 100
+        score2 = metric2.compute()
+        semantic_answer_similarity(predictions, gts)
+
+        result["EM"] = score['exact'] / 100
         result["F1"] = score['f1'] / 100
-        result["POSSCORE"] = sum(posscores) / len(posscores)  # average POSSCORE
+        result["ROUGE1-R"] = score2['rouge1'].mid.recall
+        # result["POSSCORE"] = sum(posscores) / len(posscores)  # average POSSCORE
         print("    used %d answers" % answers)
     else:
         print("    skipped for no answers")
