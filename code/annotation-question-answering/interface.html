@@ -13,82 +13,19 @@
 </style>
 <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
 <crowd-form answer-format="flatten-objects">
-<!-- CUSTOM START -->
 
-<p>
-Imagine being alone at home and coming across something in the news that makes you have the question below. You decide to ask this question to a digital assistant (e.g., Siri, Alexa, or Google's) and receive one of these answers.
-</p>
-<h3>Read the question and both answers carefully</h3>
+<h3>Read the question and the response carefully</h3>
 <div><p>
 <label><b>Question</b>:</label> ${question}<br><br>
-<label><b>Answer 1</b>:</label> ${groundtruth}<br><br>
-<label><b>Answer 2</b>:</label> ${prediction} 
+<label><b>Response</b>:</label> ${predicted} 
 </p></div>
 
-<h3>Select for each statement whether you agree or disagree with it</h3>
-<table>
-
-<tr>
-<td>
-<b>Answer 2</b> is missing words.
-</td>
-<td>
+<b>Does this response answer the question?
 <crowd-radio-group>
-<crowd-radio-button name="cut-off-agree">Agree</crowd-radio-button>
-<crowd-radio-button name="cut-off-disagree">Disagree</crowd-radio-button>
+<crowd-radio-button name="answer">Yes</crowd-radio-button>
+<crowd-radio-button name="noanswer">No</crowd-radio-button>
+<crowd-radio-button name="malformed">The response is malformed (unreadable or ungrammatical)</crowd-radio-button>
 </crowd-radio-group>
-</td>
-</tr>
-
-<tr>
-<td>
-<b>Answer 2</b> does address the <b>Question</b> (but could be wrong).
-</td>
-<td>
-<crowd-radio-group>
-<crowd-radio-button name="plausible-agree">Agree</crowd-radio-button>
-<crowd-radio-button name="plausible-disagree">Disagree</crowd-radio-button>
-</crowd-radio-group>
-</td>
-</tr>
-
-<tr>
-<td>
-<b>Answer 2</b> would be a better answer if some part of it were removed.
-</td>
-<td>
-<crowd-radio-group>
-<crowd-radio-button name="compact-agree">Agree</crowd-radio-button>
-<crowd-radio-button name="compact-disagree">Disagree</crowd-radio-button>
-</crowd-radio-group>
-</td>
-</tr>
-
-<tr>
-<td>
-<b>Answer 2</b> contains all the important information of <b>Answer 1</b>.
-</td>
-<td>
-<crowd-radio-group>
-<crowd-radio-button name="complete-agree">Agree</crowd-radio-button>
-<crowd-radio-button name="complete-disagree">Disagree</crowd-radio-button>
-</crowd-radio-group>
-</td>
-</tr>
-
-<tr>
-<td>
-<b>Answer 2</b> is harder to understand than <b>Answer 1</b>.
-</td>
-<td>
-<crowd-radio-group>
-<crowd-radio-button name="incomprehensible-agree">Agree</crowd-radio-button>
-<crowd-radio-button name="incomprehensible-disagree">Disagree</crowd-radio-button>
-</crowd-radio-group>
-</td>
-</tr>
-
-</table>
 
 <div>
 <crowd-text-area name="comments" rows="4" placeholder="Comments (optional)"></crowd-text-area>
