@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """Calculates the measures for the SCAI QReCC 21 challenge"""
-# Version: 2021-07-20
+# Version: 2021-10-04
 
 # Parameters:
 # --input-dataset=<directory>
@@ -259,11 +259,14 @@ def evaluate_answering(ground_truth, run, eval_missing_truth):
             ps = s.get_posscore(turn["Truth_answer"], prediction_text)
             posscores.append(ps)
     if answers > 0:
+        print("    used %d answers" % answers)
         score = metric.compute()
         result["Exact match"] = score['exact'] / 100
         result["F1"] = score['f1'] / 100
-        result["POSSCORE"] = sum(posscores) / len(posscores)  # average POSSCORE
-        print("    used %d answers" % answers)
+        valid_posscores = [ps for ps in posscores if ps] # remove Nones
+        num_invalid_posscores = len(posscores) - len(valid_posscores)
+        print("    removed %d invalid posscores" % num_invalid_posscores)
+        result["POSSCORE"] = sum(valid_posscores) / len(posscores)  # average POSSCORE
     else:
         print("    skipped for no answers")
     return result
