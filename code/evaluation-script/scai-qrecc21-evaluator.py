@@ -60,8 +60,7 @@ import pytrec_eval
 from datasets import load_metric
 from posscore import scorer
 
-from sas import semantic_answer_similarity
-
+from sentence_transformers import CrossEncoder
 
 # OPTIONS
 
@@ -231,25 +230,27 @@ def get_answering_run(run):
                 answering_run[turn_id] = answer
     return answering_run
 
-def evaluate_answering(ground_truth, run, eval_missing_truth):
+def evaluate_answering(ground_truth, run, eval_missing_truth,
+                       sas_model_name_or_path="cross-encoder/stsb-roberta-large"):
     print("Evaluate: Question Answering")
     
     answering_run = get_answering_run(run)
     metric = load_metric("squad_v2")
     metric2 = load_metric("rouge")
-    # s = scorer.POSSCORE() # init POSSCORE
-    predictions = []
-    gts = []
+    s = scorer.POSSCORE() # init POSSCORE
+    sas_model = CrossEncoder(sas_model_name_or_path)
 
     result = {}
     answers = 0
-    posscores = []
+    posscores, sasscores = [], []
+
     for turn in tqdm(ground_truth, desc = "  "):
         turn_id = get_turn_id(turn)
-        if eval_missing_truth or turn["Truth_answer"] != "":
+        gt = turn["Truth_answer"]
+        if eval_missing_truth or gt != "":
             reference = {
                     "id": turn_id,
-                    "answers": {'answer_start': [0], 'text': [turn["Truth_answer"]]}
+                    "answers": {'answer_start': [0], 'text': [gt]}
                 }
             prediction_text = ""
             if turn_id in answering_run:
@@ -261,23 +262,28 @@ def evaluate_answering(ground_truth, run, eval_missing_truth):
                     'no_answer_probability': 0.
                 }
             metric.add(prediction=prediction, reference=reference)
-            metric2.add(prediction = prediction_text, reference = turn["Truth_answer"])
-            predictions.append(prediction_text)
-            gts.append(turn["Truth_answer"])
-            # ps = s.get_posscore(turn["Truth_answer"], prediction_text)
-            # posscores.append(ps)
+            
+            metric2.add(prediction=prediction_text, reference=gt)
+            
+            ps = s.get_posscore(gt, prediction_text)
+            if ps:
+                posscores.append(ps)
+            else:
+                posscores.append(0)
+
+            sas = sas_model.predict([(prediction_text, gt)])
+            sasscores.append(sas)
+
     if answers > 0:
         print("    used %d answers" % answers)
         score = metric.compute()
         score2 = metric2.compute()
-        semantic_answer_similarity(predictions, gts)
 
         result["EM"] = score['exact'] / 100
         result["F1"] = score['f1'] / 100
-        valid_posscores = [ps for ps in posscores if ps] # remove Nones
-        num_invalid_posscores = len(posscores) - len(valid_posscores)
-        print("    removed %d invalid posscores" % num_invalid_posscores)
-        result["POSSCORE"] = sum(valid_posscores) / len(posscores)  # average POSSCORE
+        result["ROUGE1-R"] = score2['rouge1'].mid.recall
+        result["POSSCORE"] = sum(posscores) / len(posscores)  # average POSSCORE
+        result["SAS"] = sum(sasscores) / len(sasscores)  # average POSSCORE
     else:
         print("    skipped for no answers")
     return result

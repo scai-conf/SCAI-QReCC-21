@@ -1,0 +1,25 @@
+[
+    {
+        "Conversation_no": 1,
+        "Truth_answer": "physician assistants are medical providers who are licensed to diagnose and treat illness and disease and to prescribe medication for patients",
+        "Truth_passages": [],
+        "Truth_rewrite": "What is a physician's assistant?",
+        "Turn_no": 1
+    },
+    {
+        "Conversation_no": 2774,
+        "Truth_answer": "The pKa is found on a titration curve where midway through the buffer region. A pI is found at the equivalence point where the molecule has no net charge.",
+        "Truth_passages": [
+            "http://web.archive.org/web/20150114053507id_/http://forums.studentdoctor.net:80/threads/pi-vs-pka.480670/_p5"
+        ],
+        "Truth_rewrite": "What is the difference between pka and pi",
+        "Turn_no": 1
+    },
+    {
+        "Conversation_no": 2775,
+        "Truth_answer": "",
+        "Truth_passages": [],
+        "Truth_rewrite": "england's involvement in the 30 years war",
+        "Turn_no": 1
+    }
+]
