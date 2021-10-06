@@ -26,26 +26,32 @@ main {
   padding: 1em;
   border-radius: 0.5em;
 }
+
+.question-word {
+  background-color: oldlace;
+  padding: 2px;
+}
 </style>
 
 <p>
 Assume someone asks you the following question:<br><br>
-<label><b>Question</b>:</label> ${question}<br><br>
-Select for each of the following texts from the web whether you could use any information contained in the text to answer the question.
+<label><b>Question</b>:</label> <span id="question">${question}</span><br><br>
+Skim each of the following texts. Select for each text whether you could use any information contained in it to answer the question.
 <ul>
 <li>If the text is very incoherent or meaningless, select <b>No</b></li>
 <li>If the text is on a completely different topic, select <b>No</b></li>
-<li>If the text contains a single piece of information you could use, select <b>Yes</b></li>
-<li>If the text is a good answer by itself, select <b>Yes</b></li>
+<li>As soon as you find a single piece of information you could use, select <b>Yes</b></li>
+<li>If you have not found a single piece of information for a text after a minute, select <b>No</b></li>
 </ul>
 </p>
 <input name="conversation" type="hidden" value="${conversation_no}">
 <input name="turn" type="hidden" value="${turn_no}">
+<input name="passageids" type="hidden" value="${passage_ids}">
 
 <template id="passageTemplate">
 <p class="passage">
-<label><b>Question</b>:</label> ${question}<br>
-<label><b>Text</b>:</label> <span class="passage-text"></span><br><br>
+<label><b>Question</b>:</label> <span class="question-word">${question}</span><br>
+<label><b>Text</b>:</label> <span class="passage-text">text</span><br><br>
 My answer would use some information from this text:
 <crowd-radio-group>
 <crowd-radio-button name="relevant">Yes</crowd-radio-button>
@@ -71,6 +77,17 @@ if (!('content' in document.createElement('template'))) {
   const template = document.getElementById("passageTemplate");
   const passagesNode = document.getElementById("passages");
   const passageTexts = ${passages};
+  const stopWords = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "whats", "which", "who", "whos", "whom", "whoms", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "to", "from", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "others", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"];
+  const questionWords = new Set(document.getElementById("question").textContent.trim().toLowerCase().replaceAll(/[^a-z\s]/g, "").split(/\s+/));
+  questionWords.delete("span");
+  questionWords.delete("class");
+  for (const stopWord of stopWords) {
+    questionWords.delete(stopWord);
+  }
+  for (const questionWord of Array.from(questionWords)) {
+    questionWords.add(questionWord.replaceAll(/s$/g, ""));
+    questionWords.add(questionWord + "'s");
+  }
   let i = 0;
   const passageTextIndices = passageTexts.map(passageText => i++);
   shuffleArray(passageTextIndices);
@@ -78,7 +95,11 @@ if (!('content' in document.createElement('template'))) {
     const passageTextIndex = passageTextIndices[i];
     const passageText = passageTexts[passageTextIndex];
     const clone = template.content.cloneNode(true);
-    clone.querySelector(".passage-text").textContent = passageText;
+    const passageNode = clone.querySelector(".passage-text");
+    passageNode.textContent = passageText;
+    for (questionWord of questionWords) {
+      passageNode.innerHTML = passageNode.innerHTML.replaceAll(new RegExp("\\b(" + questionWord + ")\\b", "ig"), "<span class='question-word'>$1</span>")
+    }
     clone.querySelector("[name=relevant]").setAttribute("name", "relevant-" + (passageTextIndex + 1));
     clone.querySelector("[name=irrelevant]").setAttribute("name", "irrelevant-" + (passageTextIndex + 1));
     passagesNode.appendChild(clone);
