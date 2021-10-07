@@ -1,0 +1,15 @@
+Run,QR,MRR,EM,F1,ROUGE1-R,POSSCORE,SAS,BERTScore,ROUGE-L-KPQA,BERTScore-KPQA
+scai-qrecc21-test-dataset-2021-07-20-rachael-no-run-identifier-2021-09-04-10-38-07,,0.056,0.002,0.138,0.193,1.583,0.163,0.41,0.135,0.476
+scai-qrecc21-test-dataset-2021-07-20-rachael-no-run-identifier-2021-09-08-07-07-57,0.675,0.135,0.006,0.187,0.226,1.57,0.277,0.452,0.175,0.498
+scai-qrecc21-test-dataset-2021-07-20-rachael-no-run-identifier-2021-09-08-07-09-57,0.682,0.128,0.006,0.186,0.226,1.558,0.269,0.448,0.175,0.494
+scai-qrecc21-test-dataset-2021-07-20-rachael-no-run-identifier-2021-09-08-15-40-34,0.679,0.133,0.007,0.176,0.211,1.456,0.254,0.42,0.164,0.46
+scai-qrecc21-test-dataset-2021-07-20-rachael-no-run-identifier-2021-09-08-21-49-44,0.681,0.13,0.008,0.177,0.211,1.461,0.246,0.422,0.167,0.462
+scai-qrecc21-test-dataset-2021-07-20-rachael-no-run-identifier-2021-09-15-09-05-06,0.673,0.158,0.011,0.179,0.212,1.333,0.254,0.405,0.172,0.444
+scai-qrecc21-test-dataset-2021-07-20-rachael-no-run-identifier-2021-09-15-09-06-44,0.681,0.15,0.01,0.179,0.211,1.369,0.249,0.408,0.169,0.449
+scai-qrecc21-test-dataset-2021-07-20-rachael-no-run-identifier-2021-09-15-09-07-49,0.676,0.157,0.01,0.187,0.219,1.399,0.264,0.418,0.175,0.457
+scai-qrecc21-test-dataset-2021-07-20-rachael-no-run-identifier-2021-09-15-09-08-40,0.685,0.149,0.01,0.189,0.222,1.458,0.259,0.428,0.178,0.47
+scai-qrecc21-test-dataset-2021-07-20-scai-qrecc21-basic-baseline-no-run-identifier-2021-08-26-17-46-42,,,0,0.114,0.095,1.283,0.207,0.422,0.064,0.432
+scai-qrecc21-test-dataset-2021-07-20-scai-qrecc21-gpt3-baseline-no-run-identifier-2021-07-21-08-56-42,,,0.001,0.149,0.148,1.305,0.264,0.448,0.134,0.467
+scai-qrecc21-test-dataset-2021-07-20-scai-qrecc21-simple-baseline-no-run-identifier-2021-07-20-21-01-58,0.571,0.065,0.001,0.067,0.15,1.49,0.162,0.367,0.097,0.426
+scai-qrecc21-test-dataset-2021-07-20-torch-usi_T5_raw2-2021-09-20-05-42-29,0.657,0.082,0.001,0.137,0.2,1.451,0.221,0.415,0.117,0.467
+scai-qrecc21-test-dataset-2021-07-20-ultron-no-run-identifier-2021-09-04-17-16-58,,,0.001,0.183,0.186,1.357,0.301,0.463,0.121,0.457
