@@ -66,7 +66,7 @@ IMPORTANT: To ensure reproducibility, create a "Software" in the TIRA web interf
 
 Click on "Run" to execute your software for the selected input dataset. Your VM will not be accessible while your system is running, be detached from the internet (to ensure your software is fully installed in your virtual machine), and afterwards restored to the state before the run. Since the test set is rather large (the simple baseline takes nearly 11 hours to complete), we highly recommend you first test your software on the `scai-qrecc21-toy-dataset-2021-07-20` input dataset. This dataset contains the first conversation (6 turns/questions) only. For the test-dataset, send us a mail at [scai-qrecc@googlegroups.com](mailto:scai-qrecc@googlegroups.com) so that we unblind your results.
 
-![TIRA Interface: VM status and submission](img/tira-software-submission.png)
+![TIRA Interface: VM status and submission](tira/img/tira-software-submission.png)
 
 Then go to the "Runs" section below and click on the blue (i)-icon of the software run to check the software output. You can also download the run from there.
 
@@ -76,7 +76,7 @@ NOTE: By submitting your software you retain full copyrights. You agree to grant
 
 You can upload a JSON file as a submission at [https://www.tira.io/run-upload-scai-qrecc21](https://www.tira.io/run-upload-scai-qrecc21).
 
-![TIRA Interface: VM status and submission](img/tira-run-file-upload.png)
+![TIRA Interface: VM status and submission](tira/img/tira-run-file-upload.png)
 
 Please specify the name and a description of your run in the form. After a successful upload, the page will redirect you to the overview of all your submissions where you should [evaluate](#evaluation) your run to verify that your run is valid. At the "Runs" section, you can click on the blue (i)-icon to double-check your upload. You can also download the run from there.
 
@@ -86,7 +86,7 @@ Please specify the name and a description of your run in the form. After a succe
 
 Once you run your software or uploaded your run, "Run" the evaluator on that run through the TIRA web interface (below the software; works out-of-the-box).
 
-![TIRA Interface: Evaluation](img/tira-software-evaluation.png)
+![TIRA Interface: Evaluation](tira/img/tira-software-evaluation.png)
 
 Then go to the "Runs" section below and click on the blue (i)-icon of the evaluator run to see your scores.
 
