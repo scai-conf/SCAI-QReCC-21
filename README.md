@@ -34,7 +34,7 @@ The `questions-rewritten.json`-files contain human rewritten questions that can 
 ## Submission
 Register for the task using [this form](https://forms.gle/fwfo6fUoHUXdsGGM6). We will then send you your TIRA login once it is ready.
 
-The challenge is hosted on [TIRA](https://www.tira.io/task/scai-qrecc). Participants are encouraged to upload their code and run the evaluation on the VMs provided by the platform to ensure reproducibility of the results. It is also possible to upload the submission as a single JSON file.
+The challenge is hosted on [TIRA](https://www.tira.io/task/scai-qrecc). Participants can upload their submission as a single JSON file. Alternatively, participants can upload their code and run the evaluation on the VMs provided by the platform to ensure reproducibility of the results.
 
 The submission format for the task is a JSON file similar to the input (all `Model_xxx`-fields are optional and you can omit them from the submission, e.g. provide only Conversation_no, Turn_no and Model_answer to get the EM and F1 scores for the generated answers):
 ```
