@@ -34,7 +34,7 @@ The `questions-rewritten.json`-files contain human rewritten questions that can 
 ## Submission
 Register for the task using [this form](https://forms.gle/fwfo6fUoHUXdsGGM6). We will then send you your TIRA login once it is ready.
 
-The challenge is hosted on [TIRA](https://www.tira.io/task/scai-qrecc/). Participants are encouraged to upload their code and run the evaluation on the VMs provided by the platform to ensure reproducibility of the results. It is also possible to upload the submission as a single JSON file.
+The challenge is hosted on [TIRA](https://www.tira.io/task/scai-qrecc). Participants are encouraged to upload their code and run the evaluation on the VMs provided by the platform to ensure reproducibility of the results. It is also possible to upload the submission as a single JSON file.
 
 The submission format for the task is a JSON file similar to the input (all `Model_xxx`-fields are optional and you can omit them from the submission, e.g. provide only Conversation_no, Turn_no and Model_answer to get the EM and F1 scores for the generated answers):
 ```
@@ -57,11 +57,18 @@ You can use the [code of our simple baseline](https://github.com/scai-conf/SCAI-
 
 ### Run Submission
 
-You can upload a JSON file as a submission at [https://www.tira.io/run-upload-scai-qrecc21](https://www.tira.io/run-upload-scai-qrecc21).
+You can upload a JSON file as a submission at [https://www.tira.io/task/scai-qrecc](https://www.tira.io/task/scai-qrecc).
 
-![TIRA Interface: VM status and submission](tira/img/tira-run-file-upload.png)
+Please click on the submit button to enter the upload formular:
 
-Please specify the name and a description of your run in the form. After a successful upload, the page will redirect you to the overview of all your submissions where you should [evaluate](#evaluation) your run to verify that your run is valid. At the "Runs" section, you can click on the blue (i)-icon to double-check your upload. You can also download the run from there.
+![tira-submit](https://user-images.githubusercontent.com/10050886/172434817-60b2f296-440e-4a8d-90e7-613ddd2ba802.png)
+
+Please click on Uploads and select either scai-qrecc22-dataset (if the run uses the original questions) or scai-qrecc22-rewritten-dataset (if the run uses the rewritten questions) as dataset:
+
+![tira-upload](https://user-images.githubusercontent.com/10050886/172435730-f70b4a3b-1a7a-4853-9363-30e18198cd13.png)
+
+
+After you have uploaded your run, you can [evaluate](#evaluation) your run to verify that your run is valid. At the "Uploads" section, you can click on the blue (i)-icon to double-check your upload. You can also download the run from there.
 
 
 ## Evaluation
