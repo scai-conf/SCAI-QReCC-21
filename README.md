@@ -46,7 +46,8 @@ The submission format for the task is a JSON file similar to the input (all `Mod
     "Model_passages": { 
       "<ID-of-your-first-retrieved-passage-for-questionX>": <score-for-that-passage>, ...
     },
-    "Model_answer": "<your-answer-for-questionX>"
+    "Model_answer": "<your-answer-for-questionX>",
+    "Model_evidence": {"passage_id": "<ID-of-the-passage-containing-the-evidence>", "text": "<evidence-text-from-the-passage>"},
   }, ...
 ]
 ```
